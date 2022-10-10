@@ -9,6 +9,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AddOutlined, PlusOneOutlined, SaveOutlined } from '@mui/icons-material';
+import { Preguntas } from '../components';
 
 const initialState = {
   id_encuesta : '',
@@ -19,6 +20,21 @@ const initialState = {
   disponible: true
 }
 
+const preguntasInit = [
+  {
+      index: 0,
+      enunciado: '',
+      opciones: [{
+        index: 0,
+        texto: 'Opcion 1'
+      },
+      {
+        index: 1,
+        texto: 'Opcion 2'
+      }]
+  }
+]
+
 const fechaActual = dayjs(new Date(Date.now()).toISOString());
 
 export const CrearFormPage = () => {
@@ -27,8 +43,10 @@ export const CrearFormPage = () => {
   const {nombre, descripcion , formState, nombreValid, descripcionValid, onInputChange} = useForm(initialState);
   const [poblacion, setPoblacion] = useState('');
   const [fechaCierre, setFechaCierre] = useState(fechaActual);
+  const [preguntas, setPreguntas] = useState(preguntasInit);
 
-  console.log(fechaCierre);
+
+  //console.log(fechaCierre);
 
 
   const handleChange = (event) => {
@@ -109,14 +127,21 @@ export const CrearFormPage = () => {
                     minRows={5}
                     />
               </Grid>
-              <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'space-between' }}>
+              
+              <Grid item xs={12} sx={{ mt: 2 }}>
+                  <Preguntas preguntas={preguntas} setPreguntas={setPreguntas}/>
+              </Grid>
+              <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'flex-end' }}>
+                 
                   <Box sx={{ minWidth: 200 }}>
-                    <Button color="primary"
+                  <Button color="primary"
                           sx={{padding: 2}}>
-                      <AddOutlined sx={{fontSize: 30, mr: 1 }}/>
-                      Agregar pregunta
+                      <SaveOutlined sx={{fontSize: 30, mr: 1 }}/>
+                      Publicar
                     </Button>
+                    
                   </Box>
+                  
               </Grid>
 
            </form>
