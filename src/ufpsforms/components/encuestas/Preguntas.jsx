@@ -2,9 +2,9 @@ import { AddOutlined } from "@mui/icons-material"
 import { Button, Grid, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { Pregunta } from "./Pregunta"
+import { memo } from 'react'
 
-
-export const Preguntas = ({preguntas, setPreguntas}) => {
+export const Preguntas = memo(({preguntas, setPreguntas}) => {
     
     const onAgregarPregunta = ()=>{
         const nueva = {
@@ -18,7 +18,7 @@ export const Preguntas = ({preguntas, setPreguntas}) => {
         setPreguntas([... preguntas, nueva]);
     }
     const onSetPregunta = (index,nueva)=>{
-        console.log('PERO BUENO: '+ index +" - "+ nueva.index)
+        //console.log('PERO BUENO: '+ index +" - "+ nueva.index)
         preguntas[index] = nueva;
 
         setPreguntas([...preguntas]);
@@ -52,3 +52,4 @@ export const Preguntas = ({preguntas, setPreguntas}) => {
     
   )
 }
+)

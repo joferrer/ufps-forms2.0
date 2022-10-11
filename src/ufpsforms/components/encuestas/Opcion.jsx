@@ -2,29 +2,20 @@
 import { FormControlLabel,Radio, TextField } from "@mui/material"
 import { useEffect } from "react";
 import { useForm } from "../../../hooks/useForm"
+import React from "react";
+import { memo } from 'react'
 
-
-export const Opcion = ({pregunta, setPregunta, indice}) => {
+export const Opcion = memo(({pregunta, indice,cambiarTexto}) => {
     const {index,enunciado,opciones} = pregunta;
     const {texto} = opciones[indice]; 
-    console.log('aver: '+ texto+ " - "+ indice)
+    //console.log('aver: '+ texto+ " - "+ indice)
+    //console.log('Me generé :(')
     const {enunciadoOpcion, enunciadoOpcionValid, formSubmitted ,onInputChange} = useForm({enunciadoOpcion: texto});
-    useEffect(() => {
 
-        const nuevaOpcion = {
-            index: indice,
-            texto: enunciadoOpcion
-        }
-        opciones[indice] = nuevaOpcion;
-        const nueva = {
-            index,
-            enunciado,
-            opciones
-        }
-        setPregunta(index, nueva);
-      
+    useEffect(() => {
+        cambiarTexto(indice,enunciadoOpcion);
         
-      }, [enunciadoOpcion])
+    }, [])
   return (
     <FormControlLabel sx={{mt:2}} value={indice} control={<Radio />} label={<TextField
         
@@ -39,4 +30,4 @@ export const Opcion = ({pregunta, setPregunta, indice}) => {
 
         />} key={indice}/>
   )
-}
+})

@@ -1,10 +1,11 @@
-import { AddOutlined } from '@mui/icons-material';
+import { AddOutlined, RemoveOutlined } from '@mui/icons-material';
 import { Box, Button, Divider, FormControl, FormControlLabel, Grid, RadioGroup, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react'
 import { useForm } from '../../../hooks/useForm';
 import { Opcion } from './Opcion';
+import { memo } from 'react'
 /**
 const opciones = [
     {
@@ -14,40 +15,53 @@ const opciones = [
     }
 ]
  */
-export const Pregunta = ({pregunta, setPregunta}) => {
+export const Pregunta = memo(({pregunta, setPregunta}) => {
     //const [enunciado, setEnunciado] = useState('');
     const {enunciadoPregunta,enunciadoPreguntaValid, formSubmitted ,onInputChange} = useForm(); 
     const {index,enunciado,opciones} = pregunta;
-    
-
+    //console.log("OPCIONES PREGUNTA : "+ opciones[0].texto);
+    //const [enunciadoPregunta, setenunciadoPregunta] = useState(enunciado);
     const [value, setValue] = useState(0);
     const [opcionesPregunta,setOpcionesPregunta] = useState(opciones);
-    console.log(opcionesPregunta[0])
+    //console.log(opcionesPregunta[0])
     const handleChange = (event) => {
         setValue(event.target.value);
     };
-
-    useEffect(() => {
-
+    const cambiarPregunta = ()=>{
       const nueva = {
         index: index,
         enunciado: enunciadoPregunta,
         opciones: opcionesPregunta
       }  
       setPregunta(index,nueva);
+    }
+    useMemo(()=>cambiarPregunta(),[enunciadoPregunta,opcionesPregunta]);
     
-      
-    }, [enunciadoPregunta,opcionesPregunta])
 
-    const onAgregarOpcion = ()=>{
+    
+    
+
+    const onAgregarOpcion = ( )=>{
         const nuevaOpcion = {
             index: opcionesPregunta.length,
-            texto: 'Opcion'
+            texto: `Opcion ${opcionesPregunta.length +1}`
         }
-        console.log("changos: "+ nuevaOpcion.index)
+       // console.log("changos: "+ nuevaOpcion.index)
        setOpcionesPregunta([... opcionesPregunta, nuevaOpcion]);
     }
     
+    const onEliminarOpcion= ()=>{
+        opcionesPregunta.pop();
+        
+        setOpcionesPregunta([...opcionesPregunta]);
+    }
+
+    const onCambiarTextoOpcion = (indiceOpcion, texto)=>{
+        opcionesPregunta[indiceOpcion].texto = texto;
+        setOpcionesPregunta([...opcionesPregunta]);
+
+    }
+
   return (
     <div>
         
@@ -76,7 +90,7 @@ export const Pregunta = ({pregunta, setPregunta}) => {
                 >
                     {
                         opciones.map(({index,texto}) =>(
-                            <Opcion key={texto} indice={index} pregunta={pregunta} setPregunta={setPregunta}/>
+                            <Opcion key={pregunta.index+"-"+index} indice={index} pregunta={pregunta} cambiarTexto={onCambiarTextoOpcion} />
                         ))
                     }
                 </RadioGroup>
@@ -93,9 +107,20 @@ export const Pregunta = ({pregunta, setPregunta}) => {
                     </Button>
                     
                   </Box>
+                  <Box sx={{ minWidth: 200 }}>
+                    <Button color="primary"
+                          sx={{padding: 2}}
+                          onClick={onEliminarOpcion}
+                          >
+                      <RemoveOutlined sx={{fontSize: 30, mr: 1 }}/>
+                      Eliminar opcion
+                    </Button>
+                    
+                  </Box>
 
         </Grid>
         <Divider/>
     </div>
   )
 }
+)

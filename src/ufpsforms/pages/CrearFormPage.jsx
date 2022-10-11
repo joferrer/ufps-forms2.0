@@ -10,6 +10,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AddOutlined, PlusOneOutlined, SaveOutlined } from '@mui/icons-material';
 import { Preguntas } from '../components';
+import { memo } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { startAfter } from 'firebase/firestore/lite';
+import { startCambiarTituloEncuesta } from '../../store/crearEncuesta';
+
 
 const initialState = {
   id_encuesta : '',
@@ -37,7 +44,7 @@ const preguntasInit = [
 
 const fechaActual = dayjs(new Date(Date.now()).toISOString());
 
-export const CrearFormPage = () => {
+export const CrearFormPage = memo(() => {
 
   const [formSubmitted, setformSubmitted] = useState(false);
   const {nombre, descripcion , formState, nombreValid, descripcionValid, onInputChange} = useForm(initialState);
@@ -47,7 +54,12 @@ export const CrearFormPage = () => {
 
 
   //console.log(fechaCierre);
+  const dispatch = useDispatch();
+  const {} = useSelector(state => state.crearEncuesta)
 
+
+  //useMemo(()=>dispatch(startCambiarTituloEncuesta(nombre)),[nombre]);
+  
 
   const handleChange = (event) => {
     setPoblacion(event.target.value);
@@ -60,7 +72,7 @@ export const CrearFormPage = () => {
 
   return (
     <UfpsFormsLayout >
-           <Typography variant="h3" color="initial">{nombre}</Typography>
+          
            <form onSubmit={onSubmit}>
               <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'space-between' }}>
                   <Box sx={{ minWidth: 200 }}>
@@ -99,7 +111,8 @@ export const CrearFormPage = () => {
                   
               </Grid>
               <Grid item xs={12} sx={{ mt: 2 }}>
-                  <TextField
+                  <TextField             
+                
                     label="Titulo"
                     type="text"
                     placeholder="Titulo de la encuesta"
@@ -129,13 +142,15 @@ export const CrearFormPage = () => {
               </Grid>
               
               <Grid item xs={12} sx={{ mt: 2 }}>
-                  <Preguntas preguntas={preguntas} setPreguntas={setPreguntas}/>
+                  {/*<Preguntas preguntas={preguntas} setPreguntas={setPreguntas}/> */}
               </Grid>
               <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'flex-end' }}>
                  
                   <Box sx={{ minWidth: 200 }}>
                   <Button color="primary"
-                          sx={{padding: 2}}>
+                          sx={{padding: 2}}
+                          onClick={dispatch(startCambiarTituloEncuesta(nombre))}
+                          >
                       <SaveOutlined sx={{fontSize: 30, mr: 1 }}/>
                       Publicar
                     </Button>
@@ -149,3 +164,4 @@ export const CrearFormPage = () => {
     
   )
 }
+)
