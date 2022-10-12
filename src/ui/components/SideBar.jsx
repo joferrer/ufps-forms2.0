@@ -45,7 +45,7 @@ const closedMixin = (theme) => ({
   * Acá se aprecian los estilos aplicados para el componente. 
   */
 
-const DrawerHeader = styled('div')(({ theme = ufpstheme }) => ({
+const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
@@ -55,26 +55,24 @@ const DrawerHeader = styled('div')(({ theme = ufpstheme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-
 /** Componente contenedor de todo el SideBar.
   * Acá se aplican todos los estilos para que la barra sea Responsive.
   * Está adactada para el proyecto, la fuente original es el componente Drawer de Material.
   * Más información del componente en: https://mui.com/material-ui/react-drawer/#responsive-drawer
   */
 const DrawerComp = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme=ufpstheme, open }) => ({
+  ({ theme, open }) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
-    ...(open && {
+    ...(open ?  {
       ...openedMixin(theme),
       '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
+    }:{
       ...closedMixin(theme),
       '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+    } )
   }),
 );
 
@@ -107,7 +105,7 @@ export const  SideBar=({children})=> {
         />
 
 
-      <DrawerComp variant="permanent" open={open} theme={theme}>
+      <DrawerComp variant="permanent" open={open} >
         <DrawerHeader>
           <Avatar 
           sx={{ width: 56, height: 56, marginRight: '50px',bgcolor: ufpstheme.palette.primary.main } }>A</Avatar>

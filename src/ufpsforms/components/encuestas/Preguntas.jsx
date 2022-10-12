@@ -3,26 +3,19 @@ import { Button, Grid, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { Pregunta } from "./Pregunta"
 import { memo } from 'react'
+import { useDispatch, useSelector } from "react-redux"
+import { startCrearPregunta } from "../../../store/crearEncuesta"
 
-export const Preguntas = memo(({preguntas, setPreguntas}) => {
+export const Preguntas = memo(() => {
     
-    const onAgregarPregunta = ()=>{
-        const nueva = {
-            index: preguntas.length,
-            enunciado: '',
-            opciones: [{
-              index: 0,
-              texto: 'Opcion 1'
-          }]
-        }
-        setPreguntas([... preguntas, nueva]);
-    }
-    const onSetPregunta = (index,nueva)=>{
-        //console.log('PERO BUENO: '+ index +" - "+ nueva.index)
-        preguntas[index] = nueva;
+    const dispatch = useDispatch();
+    const {preguntas} = useSelector(state => state.crearEncuesta);
 
-        setPreguntas([...preguntas]);
+    console.log("AHHHHHH: "+ preguntas[0].enunciado)
+    const onAgregarPregunta = ()=>{
+        dispatch(startCrearPregunta());
     }
+
 
   return (
     <>
@@ -31,7 +24,7 @@ export const Preguntas = memo(({preguntas, setPreguntas}) => {
             {
                 preguntas.map((pregunta)=>(
 
-                <Pregunta key={pregunta.index} pregunta={pregunta} setPregunta={onSetPregunta}/>)
+                <Pregunta key={"Pregunta "+pregunta.index} pregunta={pregunta} />)
                 )
             }
         </Grid>

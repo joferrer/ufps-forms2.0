@@ -61,7 +61,30 @@ export const crearSlice = createSlice({
          * @param {payload} payload Contiene el nuevo enunciado y el indice.
          */
         cambiarEnunciado: (state,{payload})=>{
+            console.log(payload)
             state.preguntas[payload.index].enunciado = payload.enunciado; 
+        },
+
+
+        modificarOpcion: (state, {payload})=>{
+            state.preguntas[payload.indice].opciones[payload.valor] = payload.opcion;
+        },
+
+        agregarOpcion: (state, {payload}) =>{
+            const opciones = state.preguntas[payload.indice].opciones;
+            const nuevaOpcion = {
+                valor: opciones.length,
+                texto: `Opcion ${opciones.length}`
+            }
+            state.preguntas[payload.indice].opciones = [... opciones, nuevaOpcion]
+        },
+        /**
+         * Elimina la ultima opción de la lista.
+         * @param {} state 
+         * @param {indice} param1 indice de la pregunta a la que pertenecen las opciones. 
+         */
+        eliminarOpcion: (state,{payload})=>{
+            state.preguntas[payload.indice].opciones.pop();
         },
 
         publicarEncuesta: (state,{ payload })=>{
@@ -69,7 +92,16 @@ export const crearSlice = createSlice({
             state.titulo = payload.titulo;
         }
 
+
     }
 })
 
-export const {cambiarTitulo,cambiarEnunciado,agregarPregunta,publicarEncuesta} = crearSlice.actions;
+export const {
+    cambiarTitulo,
+    cambiarEnunciado,
+    agregarPregunta,
+    publicarEncuesta, 
+    modificarOpcion,
+    agregarOpcion,
+    eliminarOpcion,
+} = crearSlice.actions;

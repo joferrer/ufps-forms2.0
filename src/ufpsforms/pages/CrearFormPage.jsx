@@ -27,20 +27,6 @@ const initialState = {
   disponible: true
 }
 
-const preguntasInit = [
-  {
-      index: 0,
-      enunciado: '',
-      opciones: [{
-        index: 0,
-        texto: 'Opcion 1'
-      },
-      {
-        index: 1,
-        texto: 'Opcion 2'
-      }]
-  }
-]
 
 const fechaActual = dayjs(new Date(Date.now()).toISOString());
 
@@ -50,7 +36,7 @@ export const CrearFormPage = memo(() => {
   const {nombre, descripcion , formState, nombreValid, descripcionValid, onInputChange} = useForm(initialState);
   const [poblacion, setPoblacion] = useState('');
   const [fechaCierre, setFechaCierre] = useState(fechaActual);
-  const [preguntas, setPreguntas] = useState(preguntasInit);
+
 
 
   //console.log(fechaCierre);
@@ -67,7 +53,8 @@ export const CrearFormPage = memo(() => {
 
   const onSubmit = (event)=>{
     event.preventDefault();
-    console.log(formState)
+    console.log(formState);
+    dispatch(startCambiarTituloEncuesta(nombre));
   }
 
   return (
@@ -142,14 +129,14 @@ export const CrearFormPage = memo(() => {
               </Grid>
               
               <Grid item xs={12} sx={{ mt: 2 }}>
-                  {/*<Preguntas preguntas={preguntas} setPreguntas={setPreguntas}/> */}
+                  <Preguntas />
               </Grid>
               <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'flex-end' }}>
                  
                   <Box sx={{ minWidth: 200 }}>
                   <Button color="primary"
                           sx={{padding: 2}}
-                          onClick={dispatch(startCambiarTituloEncuesta(nombre))}
+                          onClick={onSubmit}
                           >
                       <SaveOutlined sx={{fontSize: 30, mr: 1 }}/>
                       Publicar

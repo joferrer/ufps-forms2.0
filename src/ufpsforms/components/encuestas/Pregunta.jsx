@@ -1,74 +1,56 @@
 import { AddOutlined, RemoveOutlined } from '@mui/icons-material';
-import { Box, Button, Divider, FormControl, FormControlLabel, Grid, RadioGroup, TextField, Typography } from '@mui/material'
+import { Box, Button, Divider, FormControl, FormControlLabel, FormLabel, Grid, RadioGroup, TextField, Typography } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react'
 import { useForm } from '../../../hooks/useForm';
 import { Opcion } from './Opcion';
 import { memo } from 'react'
-/**
-const opciones = [
-    {
-        index: 0,
-        texto: '',
+import { useDispatch, useSelector } from 'react-redux';
+import { startAgregarOpcion, startCambiarEnunciado, startEliminarOpcion } from '../../../store/crearEncuesta';
 
-    }
-]
- */
-export const Pregunta = memo(({pregunta, setPregunta}) => {
+
+export const Pregunta = memo(({pregunta}) => {
     //const [enunciado, setEnunciado] = useState('');
     const {enunciadoPregunta,enunciadoPreguntaValid, formSubmitted ,onInputChange} = useForm(); 
-    const {index,enunciado,opciones} = pregunta;
+    const {indice,enunciado} = pregunta;
     //console.log("OPCIONES PREGUNTA : "+ opciones[0].texto);
-    //const [enunciadoPregunta, setenunciadoPregunta] = useState(enunciado);
+
+    const dispatch = useDispatch();
+    const {preguntas} = useSelector(state => state.crearEncuesta);
+
+    const opciones = useMemo(()=>  preguntas[indice].opciones, [preguntas[indice].opciones]);
     const [value, setValue] = useState(0);
-    const [opcionesPregunta,setOpcionesPregunta] = useState(opciones);
+
+    const onAgregarOpcion = ()=>{
+      dispatch(startAgregarOpcion(indice))
+    }
+
+    const onEliminarOpcion = ()=>{
+      dispatch(startEliminarOpcion(indice));
+    }
+    
+
+
     //console.log(opcionesPregunta[0])
     const handleChange = (event) => {
         setValue(event.target.value);
     };
-    const cambiarPregunta = ()=>{
-      const nueva = {
-        index: index,
-        enunciado: enunciadoPregunta,
-        opciones: opcionesPregunta
-      }  
-      setPregunta(index,nueva);
-    }
-    useMemo(()=>cambiarPregunta(),[enunciadoPregunta,opcionesPregunta]);
     
-
-    
-    
-
-    const onAgregarOpcion = ( )=>{
-        const nuevaOpcion = {
-            index: opcionesPregunta.length,
-            texto: `Opcion ${opcionesPregunta.length +1}`
-        }
-       // console.log("changos: "+ nuevaOpcion.index)
-       setOpcionesPregunta([... opcionesPregunta, nuevaOpcion]);
+    const onChangeEnunciado = ()=>{
+      dispatch(startCambiarEnunciado(indice ,enunciadoPregunta));
     }
     
-    const onEliminarOpcion= ()=>{
-        opcionesPregunta.pop();
-        
-        setOpcionesPregunta([...opcionesPregunta]);
-    }
 
-    const onCambiarTextoOpcion = (indiceOpcion, texto)=>{
-        opcionesPregunta[indiceOpcion].texto = texto;
-        setOpcionesPregunta([...opcionesPregunta]);
-
-    }
 
   return (
     <div>
         
             
             <Grid item xs={12} sx={{ mt: 2 }}>
-                <Typography>{index}.</Typography>
+                <Typography>{indice}.</Typography>
                   <TextField
+                    onBeforeInputCapture={onChangeEnunciado}
                     label="Enunciado de la Pregunta"
                     type="text"
                     placeholder="Enunciado de la pregunta"
@@ -82,6 +64,7 @@ export const Pregunta = memo(({pregunta, setPregunta}) => {
             </Grid>
             <Grid item xs={12} sx={{ mt: 2 }}>
             <FormControl>
+                <FormLabel id="demo-controlled-radio-buttons-group">Población</FormLabel>
                 <RadioGroup
                      aria-labelledby="demo-controlled-radio-buttons-group"
                      name="controlled-radio-buttons-group"
@@ -89,8 +72,8 @@ export const Pregunta = memo(({pregunta, setPregunta}) => {
                      onChange={handleChange}
                 >
                     {
-                        opciones.map(({index,texto}) =>(
-                            <Opcion key={pregunta.index+"-"+index} indice={index} pregunta={pregunta} cambiarTexto={onCambiarTextoOpcion} />
+                        opciones.map(({valor,texto}) =>(
+                            <Opcion key={"Opcion: "+pregunta.indice+"-"+valor} valor={valor} pregunta={pregunta} />
                         ))
                     }
                 </RadioGroup>
