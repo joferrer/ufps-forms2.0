@@ -11,7 +11,7 @@ export const Preguntas = memo(() => {
     const dispatch = useDispatch();
     const {preguntas} = useSelector(state => state.crearEncuesta);
 
-    console.log("AHHHHHH: "+ preguntas[0].enunciado)
+
     const onAgregarPregunta = ()=>{
         dispatch(startCrearPregunta());
     }

@@ -6,7 +6,7 @@ export const crearSlice = createSlice({
         index: 0,
         titulo: '',
         poblacion: 0,
-        decripcion:'',
+        descripcion:'',
         fechaCierre: new Date(Date.now()).toISOString(),
         preguntas: [{
             indice: 0,
@@ -86,7 +86,16 @@ export const crearSlice = createSlice({
         eliminarOpcion: (state,{payload})=>{
             state.preguntas[payload.indice].opciones.pop();
         },
+        cambiarPoblacion: (state,{payload})=>{
+            state.poblacion = payload.poblacion; 
+        },
+        cambiarFechaDeCierre: (state, {payload})=>{
+            state.fechaCierre = payload.fechaCierre;
+        },
 
+        cambiarDescripcion: (state, {payload}) =>{
+            state.descripcion = payload.descripcion;
+        },
         publicarEncuesta: (state,{ payload })=>{
             
             state.titulo = payload.titulo;
@@ -104,4 +113,7 @@ export const {
     modificarOpcion,
     agregarOpcion,
     eliminarOpcion,
+    cambiarPoblacion,
+    cambiarFechaDeCierre,
+    cambiarDescripcion,
 } = crearSlice.actions;

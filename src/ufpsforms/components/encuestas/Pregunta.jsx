@@ -11,10 +11,10 @@ import { startAgregarOpcion, startCambiarEnunciado, startEliminarOpcion } from '
 
 
 export const Pregunta = memo(({pregunta}) => {
-    //const [enunciado, setEnunciado] = useState('');
+
     const {enunciadoPregunta,enunciadoPreguntaValid, formSubmitted ,onInputChange} = useForm(); 
-    const {indice,enunciado} = pregunta;
-    //console.log("OPCIONES PREGUNTA : "+ opciones[0].texto);
+    const {indice} = pregunta;
+
 
     const dispatch = useDispatch();
     const {preguntas} = useSelector(state => state.crearEncuesta);
@@ -31,8 +31,6 @@ export const Pregunta = memo(({pregunta}) => {
     }
     
 
-
-    //console.log(opcionesPregunta[0])
     const handleChange = (event) => {
         setValue(event.target.value);
     };

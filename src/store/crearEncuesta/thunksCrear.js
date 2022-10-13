@@ -6,7 +6,10 @@ import {
     cambiarEnunciado, 
     modificarOpcion,
     agregarOpcion,
-    eliminarOpcion
+    eliminarOpcion,
+    cambiarFechaDeCierre,
+    cambiarPoblacion,
+    cambiarDescripcion,
 } from "./"
 
 export const startCambiarTituloEncuesta = (titulo)=>{
@@ -38,4 +41,19 @@ export const startEliminarOpcion = (indice)=>{
     return dispatch => dispatch(eliminarOpcion({indice}))
 }
 
+export const startCambiarFechaCierre = (fechaCierre)=>{
+    return dispatch => dispatch(cambiarFechaDeCierre({fechaCierre}))
+}
+
+export const startCambiarPoblacion = (poblacion)=>{
+    return dispatch => dispatch(cambiarPoblacion({poblacion}))
+}
+
+export const startCambiarDescripcion = (descripcion)=>{
+    return dispatch => dispatch(cambiarDescripcion({descripcion}));
+}
+
+export const startPublicarEncuesta = ()=>{
+
+}
 

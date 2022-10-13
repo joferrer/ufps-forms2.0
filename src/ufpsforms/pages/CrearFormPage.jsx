@@ -1,21 +1,17 @@
-
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useState,memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Alert, Box, Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useForm } from '../../hooks/useForm';
 import { UfpsFormsLayout } from '../layout/UfpsFormsLayout';
-
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AddOutlined, PlusOneOutlined, SaveOutlined } from '@mui/icons-material';
+import { SaveOutlined } from '@mui/icons-material';
 import { Preguntas } from '../components';
-import { memo } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useMemo } from 'react';
-import { startAfter } from 'firebase/firestore/lite';
-import { startCambiarTituloEncuesta } from '../../store/crearEncuesta';
+
+
+import { startCambiarDescripcion, startCambiarFechaCierre, startCambiarPoblacion, startCambiarTituloEncuesta } from '../../store/crearEncuesta';
 
 
 const initialState = {
@@ -36,15 +32,11 @@ export const CrearFormPage = memo(() => {
   const {nombre, descripcion , formState, nombreValid, descripcionValid, onInputChange} = useForm(initialState);
   const [poblacion, setPoblacion] = useState('');
   const [fechaCierre, setFechaCierre] = useState(fechaActual);
+  const [errorFormulario, setErrorFormulario] = useState(false);
 
-
-
-  //console.log(fechaCierre);
   const dispatch = useDispatch();
   const {} = useSelector(state => state.crearEncuesta)
 
-
-  //useMemo(()=>dispatch(startCambiarTituloEncuesta(nombre)),[nombre]);
   
 
   const handleChange = (event) => {
@@ -53,17 +45,28 @@ export const CrearFormPage = memo(() => {
 
   const onSubmit = (event)=>{
     event.preventDefault();
-    console.log(formState);
+    console.log(fechaCierre.toISOString());
+    if(poblacion === '' || fechaCierre.isBefore(fechaActual) ){
+      setErrorFormulario(true);
+      return;
+    }
+    dispatch(startCambiarPoblacion(poblacion));
     dispatch(startCambiarTituloEncuesta(nombre));
+    dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
+    dispatch(startCambiarDescripcion(descripcion));
+    
   }
 
   return (
     <UfpsFormsLayout >
-          
+          {
+            errorFormulario ? <Alert severity="error">Por favor, revice que todos los campos fueron devidamente diligenciados</Alert>:''
+
+          }
            <form onSubmit={onSubmit}>
               <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'space-between' }}>
                   <Box sx={{ minWidth: 200 }}>
-                      <FormControl fullWidth  >
+                      <FormControl fullWidth  error={poblacion === ''}>
                         <InputLabel id="demo-simple-select-label">Población</InputLabel>
                         <Select
                           labelId="demo-simple-select-label"
@@ -76,6 +79,7 @@ export const CrearFormPage = memo(() => {
                           <MenuItem value={1}>Profesores</MenuItem>
                           <MenuItem value={2}>Graduados</MenuItem>
                         </Select>
+                        <FormHelperText>{errorFormulario? 'Por favor, seleccione una población':''}</FormHelperText>
                       </FormControl>
                     </Box>
                     <Box sx={{ minWidth: 200 }}>
@@ -91,6 +95,7 @@ export const CrearFormPage = memo(() => {
                           minDateTime={fechaActual}
                         />
                         </LocalizationProvider>
+                        <FormHelperText>{fechaCierre.isBefore(fechaActual) ? 'Por favor, seleccione una fecha posterior a la actual':''}</FormHelperText>
                       </FormControl>
                     </Box>
               </Grid>
