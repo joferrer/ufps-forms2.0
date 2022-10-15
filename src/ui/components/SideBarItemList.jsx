@@ -20,7 +20,7 @@ const opciones = [
   },
   {
     index: 2,
-    opcion: 'Cargar Población',
+    opcion: 'Poblaciones',
     link: '/poblacion'
   },
   {
