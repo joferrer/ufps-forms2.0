@@ -21,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.37.0",
     "react-redux": "^8.0.4",
-    "react-router-dom": "6"
+    "react-router-dom": "6",
+    "read-excel-file": "^5.5.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
