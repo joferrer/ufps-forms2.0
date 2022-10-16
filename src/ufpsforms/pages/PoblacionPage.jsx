@@ -7,6 +7,9 @@ import { Tabla } from '../components';
 import { UfpsFormsLayout } from '../layout/UfpsFormsLayout';
 import { NothingSelectedView } from '../views/NothingSelectedView';
 import readXlsxFile from 'read-excel-file';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { startSetPoblaciones } from '../../store/poblaciones';
 
 
 
@@ -18,13 +21,27 @@ const poblaciones = [{nombre : 'Estudiantes', cantidad: 0,link: `<Link href="#" 
 const poblacionInit = [{nombre: 'Jeison Ferrer', correo: 'jeisonomarfort@ufps.edu.co'}]
 
 export const PoblacionPage = () => {
-
   const location = useLocation();
   const {search} = location;
-  const [poblacion,setPoblacion] = useState(poblacionInit);
+  const dispatch = useDispatch();
+  const {poblaciones} = useSelector(state => state.poblaciones);
+
+
+  const [poblacion,setPoblacion] = useState(poblaciones);
   const [modificado, setModificado] = useState(false);
   //console.log(search.charAt(search.length-1) === '');
   //console.log(search === '')
+
+
+  const traerPoblaciones = ()=>{
+     dispatch(startSetPoblaciones());
+  }
+
+  useEffect(() => {
+    traerPoblaciones();
+  
+  }, [])
+  
 
 
   const guardarPoblacion = ()=>{

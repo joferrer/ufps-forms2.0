@@ -1,5 +1,7 @@
 import {Grid, Typography} from '@mui/material';
 
+//TODO: QUE TENGA LOS LOGOS DE LA UFPS
+
 export const AuthLayout = ({children, title = ''}) => {
   return (
     <Grid container

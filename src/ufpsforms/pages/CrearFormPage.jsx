@@ -54,6 +54,8 @@ export const CrearFormPage = memo(() => {
     dispatch(startCambiarTituloEncuesta(nombre));
     dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
     dispatch(startCambiarDescripcion(descripcion));
+
+    //TODO: PUBLICAR SUBMIT PUBLICAR ENCUESTA
     
   }
 

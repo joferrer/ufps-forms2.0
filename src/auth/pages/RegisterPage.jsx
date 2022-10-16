@@ -39,6 +39,7 @@ export const RegisterPage = () => {
     dispatch(startCreatingUserWithEmailPassword(formState));
   }
 
+  //TODO: Que pueda escoger la población a la que pertenece. 
   return (
     <AuthLayout title='Registar'>
 
