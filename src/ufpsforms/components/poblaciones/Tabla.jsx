@@ -9,8 +9,8 @@ import { Link } from "react-router-dom"
  */
 export const Tabla = ({cabeceras, filas}) => {
   return (
-    <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{maxHeight: '80%', maxWidth: '96%'}}>
+        <Table sx={{ minWidth: 360 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
                     {

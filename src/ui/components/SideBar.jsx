@@ -12,7 +12,7 @@ import { SideBarItemList } from './SideBarItemList';
  * Width de la SideBar
  */
 const drawerWidth = 240;
-
+const screen = window.screen.width;
 
 /**
   * Estilos para que el componente sea responsive al abrirse la barra. 
@@ -35,9 +35,9 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width:  window.screen.width > 500 ? `calc(${theme.spacing(7)} + 1px)`: 0,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width:`calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
@@ -81,7 +81,8 @@ const DrawerComp = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open'
  * @param {JSX} children Es el JSX que contiene todo la pagina actual. 
  * @returns Componente SideBar.jsx
  */
-export const  SideBar=({children})=> {
+export const  SideBar=(props)=> {
+  const {children} = props;
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -93,6 +94,8 @@ export const  SideBar=({children})=> {
     setOpen(false);
   };
 
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -102,8 +105,9 @@ export const  SideBar=({children})=> {
         handleDrawerOpen={handleDrawerOpen} 
         drawerwidth={drawerWidth}
         open={open}
+        
         />
-
+      
 
       <DrawerComp variant="permanent" open={open} >
         <DrawerHeader>
