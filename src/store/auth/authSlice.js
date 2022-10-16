@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+
+//TODO: HABILITAR LA AUTENTIFICACIÓN DE ADMINISTRADOR. 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {

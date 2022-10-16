@@ -1,12 +1,15 @@
-import { Button, Input } from "@mui/material";
-import { useLocation } from "react-router-dom";
-import { Tabla } from "../components";
-import { UfpsFormsLayout } from "../layout/UfpsFormsLayout"
-import { NothingSelectedView } from "../views/NothingSelectedView"
-import readXlsxFile from 'read-excel-file'
-import { useState } from "react";
-import { Box } from "@mui/system";
-import { SaveOutlined, StoreOutlined } from "@mui/icons-material";
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Box } from '@mui/system';
+import { Button, Input } from '@mui/material';
+import { SaveOutlined } from '@mui/icons-material';
+import { Tabla } from '../components';
+import { UfpsFormsLayout } from '../layout/UfpsFormsLayout';
+import { NothingSelectedView } from '../views/NothingSelectedView';
+import readXlsxFile from 'read-excel-file';
+
+
+
 
 const poblaciones = [{nombre : 'Estudiantes', cantidad: 0,link: `<Link href="#" underline="none">
 {'underline="none"'}
