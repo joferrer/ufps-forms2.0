@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { Button, Input } from '@mui/material';
-import { SaveOutlined } from '@mui/icons-material';
+import { AddOutlined, SaveOutlined, SettingsInputAntenna } from '@mui/icons-material';
 import { Tabla } from '../components';
 import { UfpsFormsLayout } from '../layout/UfpsFormsLayout';
 import { NothingSelectedView } from '../views/NothingSelectedView';
 import readXlsxFile from 'read-excel-file';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startSetPoblaciones } from '../../store/poblaciones';
+import { startCargarEncuestadosPorPoblacion, startSetPoblaciones } from '../../store/poblaciones';
+import { useMemo } from 'react';
+import { async } from '@firebase/util';
 
 
 
@@ -25,26 +27,59 @@ export const PoblacionPage = () => {
   const {search} = location;
   const dispatch = useDispatch();
   const {poblaciones} = useSelector(state => state.poblaciones);
+  
+  const [listaPoblacion, setListaPoblacion] = useState([]);
 
-
-  const [poblacion,setPoblacion] = useState(poblaciones);
+  const [poblacion,setPoblacion] = useState([]);
   const [modificado, setModificado] = useState(false);
   //console.log(search.charAt(search.length-1) === '');
   //console.log(search === '')
+  //console.log(listaPoblacion);
+
+  const traerPoblaciones =  async()=>{
+    await dispatch( startSetPoblaciones());
+    console.log(poblaciones)
+    await traerEncuestados();
+     
+  }
+  const traerEncuestados = async()=>{
+    await poblaciones.forEach(async (p) =>  await dispatch(startCargarEncuestadosPorPoblacion(p.id_poblacion)));
+  }
+  const vistaPoblacion = ()=>{
+      let pobl = [];
+      for (let i = 0; i < poblaciones.length; i++) {
+        const p = poblaciones[i];
+        pobl[i] = {
+            id_poblacion: p.id_poblacion,
+            nombre: p.nombre,
+            cantiad: p.listaEncuestados.length
+        }
+
+        
+      }
+      setPoblacion(pobl);
+  }
+  
+  useEffect(() => {
+    if(poblacion.length === 0){
+        traerPoblaciones();       
+    }
+    vistaPoblacion();
+  }, [poblaciones])
 
 
-  const traerPoblaciones = ()=>{
-     dispatch(startSetPoblaciones());
+  const presentarPoblaciones = ()=>{
+      let listaTablePoblaciones = [];
+      
+      poblaciones.forEach((poblacion,index) => {
+          listaTablePoblaciones[index] = {
+            nombre: poblacion.nombre,
+          }
+      });
   }
 
-  useEffect(() => {
-    traerPoblaciones();
-  
-  }, [])
-  
-
-
   const guardarPoblacion = ()=>{
+
 
   }
 
@@ -77,7 +112,7 @@ export const PoblacionPage = () => {
           sx={{marginBottom: 2}}
         >
         {
-            search === '' ? <></>
+            search === '' ? <Button><AddOutlined/>Agregar Población</Button>
             : 
               <Input 
                 type="file"
@@ -95,7 +130,7 @@ export const PoblacionPage = () => {
          
           {poblaciones.length === 0 ?  <NothingSelectedView/>:
               search ==='' ?
-              <Tabla cabeceras = {['Población','Cantidad','Ver','Eliminar']} filas={poblaciones} /> 
+              <Tabla cabeceras = {['Población','Cantidad','Ver','Eliminar']} filas={poblacion} /> 
               :
               <Tabla cabeceras = {['Nombre','Correo']} filas={poblacion} />
           }

@@ -12,8 +12,10 @@ export const poblacionesSlice = createSlice({
     reducers:{
 
         setPoblaciones: (state,{payload})=>{
-            state.poblaciones = payload.poblaciones;
+            
+            state.poblaciones =  payload.poblaciones;
             state.error = '';
+            
         }, 
 
 
@@ -21,7 +23,16 @@ export const poblacionesSlice = createSlice({
             state.error = payload.error;
         },
 
-
+        registrarListaPoblacion: (state, {payload})=>{
+            
+            let indice= -1;
+            for (let i = 0; i < state.poblaciones.length; i++) {
+                const p = state.poblaciones[i];
+                if(p.id_poblacion === payload.id_poblacion) indice = i;
+            }
+            console.log("aaaa: "+indice)
+            if(indice != -1) state.poblaciones[indice].listaEncuestados = payload.listaEncuestados; // listaEncuestados
+        },
         /**
          * Elimina una población dada su id.
          * TODO: no creo que sirva esta cosa. 
@@ -38,4 +49,4 @@ export const poblacionesSlice = createSlice({
 
 })
 
-export const {setPoblaciones, regitrarError}= poblacionesSlice.actions;
+export const {setPoblaciones, regitrarError, registrarListaPoblacion}= poblacionesSlice.actions;
