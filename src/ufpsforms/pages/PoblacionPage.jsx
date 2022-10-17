@@ -52,7 +52,9 @@ export const PoblacionPage = () => {
         pobl[i] = {
             id_poblacion: p.id_poblacion,
             nombre: p.nombre,
-            cantiad: p.listaEncuestados.length
+            cantidad: p.listaEncuestados.length,
+            link: `/poblacion?p=${p.id_poblacion}`,
+            eliminar: 'true'
         }
 
         
@@ -105,7 +107,9 @@ export const PoblacionPage = () => {
 
   }
 
-
+  const onGuardarPoblacion = ()=>{
+    
+  }
   return (
     <UfpsFormsLayout >
         <Box
@@ -123,14 +127,14 @@ export const PoblacionPage = () => {
           }
 
           {
-            modificado ? <Button><SaveOutlined/>Guardar Cambios</Button>: <></>
+            modificado ? <Button onClick={onGuardarPoblacion}><SaveOutlined/>Guardar Cambios</Button>: <></>
           }
         </Box>
           
          
           {poblaciones.length === 0 ?  <NothingSelectedView/>:
               search ==='' ?
-              <Tabla cabeceras = {['Población','Cantidad','Ver','Eliminar']} filas={poblacion} /> 
+              <Tabla cabeceras = {['ID','Población','Cantidad','Ver','Eliminar']} filas={poblacion} /> 
               :
               <Tabla cabeceras = {['Nombre','Correo']} filas={poblacion} />
           }

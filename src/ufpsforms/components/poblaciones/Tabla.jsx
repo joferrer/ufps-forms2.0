@@ -1,5 +1,5 @@
-import { ArrowForwardOutlined, ArrowOutwardOutlined, ArrowRightOutlined } from "@mui/icons-material"
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { ArrowForwardOutlined, ArrowOutwardOutlined, ArrowRightOutlined, DeleteOutline, DeleteOutlined } from "@mui/icons-material"
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { Link } from "react-router-dom"
 /**
  * Ej: cabecera = [nombre, cantidad]
@@ -31,13 +31,21 @@ export const Tabla = ({cabeceras, filas}) => {
                         >
                             {
                                 Object.keys(fila).map((valor,index)=>(
-                                    valor !== 'link' ?  
-                                    <TableCell key={`columna-tabla: ${index}`} >{fila[valor]}</TableCell>
+                                    valor === 'link' ?  
+                                        <TableCell key={`columna-tabla: ${index}`} >
+                                            <Link to={`/poblacion?p=${index}`}><ArrowForwardOutlined /></Link>
+                                        </TableCell>
+                                    
                                     : 
-                                    <TableCell key={`columna-tabla: ${index}`} >
-                                        <Link to={`/poblacion?p=${index}`}><ArrowForwardOutlined /></Link>
-                                    </TableCell>
-
+                                    (
+                                        valor === 'eliminar' ?
+                                            <TableCell key={`columna-tabla: ${index}`} >
+                                            <Button><DeleteOutlined /></Button>
+                                            </TableCell>
+                                            :
+                                            <TableCell key={`columna-tabla: ${index}`} >{fila[valor]}</TableCell>        
+                                            
+                                    )
                                 ))
                             }
                             
