@@ -33,7 +33,7 @@ export const Tabla = ({cabeceras, filas}) => {
                                 Object.keys(fila).map((valor,index)=>(
                                     valor === 'link' ?  
                                         <TableCell key={`columna-tabla: ${index}`} >
-                                            <Link to={`/poblacion?p=${index}`}><ArrowForwardOutlined /></Link>
+                                            <Link to={fila.link}><ArrowForwardOutlined /></Link>
                                         </TableCell>
                                     
                                     : 

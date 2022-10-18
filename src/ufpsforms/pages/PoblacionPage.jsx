@@ -1,26 +1,16 @@
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { Button, Input } from '@mui/material';
-import { AddOutlined, SaveOutlined, SettingsInputAntenna } from '@mui/icons-material';
+import { AddOutlined, SaveOutlined } from '@mui/icons-material';
 import { Tabla } from '../components';
 import { UfpsFormsLayout } from '../layout/UfpsFormsLayout';
 import { NothingSelectedView } from '../views/NothingSelectedView';
-import readXlsxFile from 'read-excel-file';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startCargarEncuestadosPorPoblacion, startSetPoblaciones } from '../../store/poblaciones';
-import { useMemo } from 'react';
-import { async } from '@firebase/util';
 
+import readXlsxFile from 'read-excel-file';
 
-
-
-const poblaciones = [{nombre : 'Estudiantes', cantidad: 0,link: `<Link href="#" underline="none">
-{'underline="none"'}
-</Link>`}, {nombre: 'profesores', cantidad: 0}, {nombre: 'Graduados', cantidad: 0}]
-
-const poblacionInit = [{nombre: 'Jeison Ferrer', correo: 'jeisonomarfort@ufps.edu.co'}]
 
 export const PoblacionPage = () => {
   const location = useLocation();
@@ -53,7 +43,7 @@ export const PoblacionPage = () => {
             id_poblacion: p.id_poblacion,
             nombre: p.nombre,
             cantidad: p.listaEncuestados.length,
-            link: `/poblacion?p=${p.id_poblacion}`,
+            link: `/poblacion?p=${i}`,
             eliminar: 'true'
         }
 
@@ -62,26 +52,45 @@ export const PoblacionPage = () => {
       setPoblacion(pobl);
   }
   
+  const presentarPoblaciones = ()=>{
+      
+    if(search  != ''){
+      const busqueda = Number(search.charAt(search.length-1)) ;
+
+      if(busqueda < poblaciones.length){
+        const p = poblaciones[busqueda];
+        console.log("aaaaasss: "+ search )
+        const encuestadosDePoblacion = p.listaEncuestados;
+        let retornar = [];
+        encuestadosDePoblacion.forEach((item, index) =>{
+            retornar[ index] = {
+                nombre: item.nombre,
+                correo: item.correo
+            }
+        });
+        setListaPoblacion(retornar); 
+  
+      }
+      
+    }
+  }
+
+
   useEffect(() => {
     if(poblacion.length === 0){
         traerPoblaciones();       
     }
+    if(search != ''){
+      presentarPoblaciones();
+    }
     vistaPoblacion();
-  }, [poblaciones])
+  }, [poblaciones, search])
 
 
-  const presentarPoblaciones = ()=>{
-      let listaTablePoblaciones = [];
-      
-      poblaciones.forEach((poblacion,index) => {
-          listaTablePoblaciones[index] = {
-            nombre: poblacion.nombre,
-          }
-      });
-  }
+  
 
   const guardarPoblacion = ()=>{
-
+    //TODO: GUARDAR POBLACIÓN
 
   }
 
@@ -102,13 +111,13 @@ export const PoblacionPage = () => {
       
     }
     console.log(nuevaPoblacion);
-    setPoblacion(nuevaPoblacion);
+    setListaPoblacion(nuevaPoblacion);
     setModificado(true);
 
   }
 
   const onGuardarPoblacion = ()=>{
-    
+
   }
   return (
     <UfpsFormsLayout >
@@ -136,7 +145,7 @@ export const PoblacionPage = () => {
               search ==='' ?
               <Tabla cabeceras = {['ID','Población','Cantidad','Ver','Eliminar']} filas={poblacion} /> 
               :
-              <Tabla cabeceras = {['Nombre','Correo']} filas={poblacion} />
+              <Tabla cabeceras = {['Nombre','Correo']} filas={listaPoblacion} />
           }
            
     </UfpsFormsLayout>
