@@ -76,12 +76,12 @@ export const CrearFormPage = memo(() => {
     console.log('Datos encuesta: '+ datosEncuesta);
    const publicarEncuesta = await dispatch(startPublicarEncuesta(datosEncuesta));
 
+   //TODO:HAY UN ERROR, AL PARECER SE PUBLICAN LA ENCUESTAS PERO NO LAS PREGUNTAS NI LAS OPCIONES :(   
     if(!publicarEncuesta.error){
       window.location = "/" 
     }
     setErrorFormulario(true)
-    //TODO: PUBLICAR SUBMIT PUBLICAR ENCUESTA
-    
+ 
       
 
   }
