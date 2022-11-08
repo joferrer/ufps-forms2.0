@@ -81,13 +81,18 @@ export const startPublicarEncuesta = (encuesta = {})=>{
 
             await publicarPreguntas(URL_PREGUNTA,insertId,encuesta.preguntas);      
 
+            return {
+                error:false,
+                msg: 'Encuesta publicada'
+            }
 
         }
     
         catch(error){
     
             return {
-                error: `Ah ocurrido un error al publicar la encuesta: ${error}` 
+                error: true,
+                msg: `Ah ocurrido un error al publicar la encuesta: ${error}` 
             }
         }
     }    
@@ -114,7 +119,7 @@ const publicarPreguntas = async(URL, id, preguntas = [])=>{
 
         });
     } catch (error) {
-        return "Ha ocurrido un error: "+ error;
+        throw new Error("Ha ocurrido un error: "+ error);
     }
     
 }
@@ -132,9 +137,11 @@ const publicarOpciones = async(URL, id ,opciones= []) =>{
             }
             const {data} = await ufpsformsApi.post(URL,opcionApublicar);
             console.log("Funciona: "+ data);
+
+            
         })    
     } catch (error) {
-        return "Ha ocurrido un error "+ error;
+        throw new Error("Ha ocurrido un error: "+ error);
     }
     
 }

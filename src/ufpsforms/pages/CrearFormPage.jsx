@@ -16,6 +16,7 @@ import { startCambiarDescripcion, startCambiarFechaCierre, startCambiarPoblacion
 import {useGetDatosEncuesta} from '../../hooks'
 import { useMemo } from 'react';
 import { startSetPoblaciones } from '../../store/poblaciones/thunksPoblaciones';
+import { useLocation } from 'react-router-dom';
 
 const poblacionInit = [{id_poblacion: 9, nombre: ""}]
 
@@ -40,7 +41,7 @@ export const CrearFormPage = memo(() => {
   const [errorFormulario, setErrorFormulario] = useState(false);
   const datosEncuesta = useGetDatosEncuesta();
   const {poblaciones} = useSelector(state => state.poblaciones);
-
+  const location  = useLocation();
 
 
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ export const CrearFormPage = memo(() => {
     
   };
 
-  const onSubmit = (event)=>{
+  const onSubmit = async (event)=>{
     event.preventDefault();
     dispatch(startCambiarTituloEncuesta(nombre));
     dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
@@ -73,8 +74,12 @@ export const CrearFormPage = memo(() => {
     datosEncuesta.descripcion = descripcion;
     
     console.log('Datos encuesta: '+ datosEncuesta);
-    dispatch(startPublicarEncuesta(datosEncuesta));
+   const publicarEncuesta = await dispatch(startPublicarEncuesta(datosEncuesta));
 
+    if(!publicarEncuesta.error){
+      window.location = "/" 
+    }
+    setErrorFormulario(true)
     //TODO: PUBLICAR SUBMIT PUBLICAR ENCUESTA
     
       
