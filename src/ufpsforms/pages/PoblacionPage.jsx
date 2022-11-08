@@ -7,7 +7,7 @@ import { Tabla } from '../components';
 import { UfpsFormsLayout } from '../layout/UfpsFormsLayout';
 import { NothingSelectedView } from '../views/NothingSelectedView';
 import { useDispatch, useSelector } from 'react-redux';
-import { startCargarEncuestadosPorPoblacion, startSetPoblaciones } from '../../store/poblaciones';
+import { startCargarEncuestadosPorPoblacion, startResgistrarEncuestadosAPoblacion, startSetPoblaciones } from '../../store/poblaciones';
 
 import readXlsxFile from 'read-excel-file';
 
@@ -22,9 +22,7 @@ export const PoblacionPage = () => {
 
   const [poblacion,setPoblacion] = useState([]);
   const [modificado, setModificado] = useState(false);
-  //console.log(search.charAt(search.length-1) === '');
-  //console.log(search === '')
-  //console.log(listaPoblacion);
+
 
   const traerPoblaciones =  async()=>{
     await dispatch( startSetPoblaciones());
@@ -59,7 +57,6 @@ export const PoblacionPage = () => {
 
       if(busqueda < poblaciones.length){
         const p = poblaciones[busqueda];
-        console.log("aaaaasss: "+ search )
         const encuestadosDePoblacion = p.listaEncuestados;
         let retornar = [];
         encuestadosDePoblacion.forEach((item, index) =>{
@@ -90,8 +87,7 @@ export const PoblacionPage = () => {
   
 
   const guardarPoblacion = ()=>{
-    //TODO: GUARDAR POBLACIÓN
-
+  
   }
 
   const readFile = async (e)=>{
@@ -111,13 +107,22 @@ export const PoblacionPage = () => {
       
     }
     console.log(nuevaPoblacion);
-    setListaPoblacion(nuevaPoblacion);
+    setListaPoblacion([...listaPoblacion, ...nuevaPoblacion]);
     setModificado(true);
-
+    
   }
 
-  const onGuardarPoblacion = ()=>{
+  const onGuardarPoblacion = async ()=>{
+      //TODO: GUARDAR POBLACIÓN
+      
+      if(search != ''){
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        const busqueda = Number(search.charAt(search.length-1));
+        const poblacion = poblaciones[busqueda].id_poblacion;
+        console.log("que esta pasando" + poblacion)
+        await dispatch(await startResgistrarEncuestadosAPoblacion(listaPoblacion, poblacion));
 
+      }
   }
   return (
     <UfpsFormsLayout >

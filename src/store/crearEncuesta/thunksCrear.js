@@ -1,4 +1,4 @@
-
+import { ufpsformsApi } from "../api/ufpsformsApi";
 import { 
     agregarPregunta,
     cambiarTitulo,
@@ -12,11 +12,14 @@ import {
     cambiarDescripcion,
 } from "./"
 
+
+
 export const startCambiarTituloEncuesta = (titulo)=>{
     return (dispatch)=>{
         dispatch(publicarEncuesta({titulo}));
     }
 }
+
 
 export const startCrearPregunta = ()=>{
     return (dispatch) =>{
@@ -25,7 +28,6 @@ export const startCrearPregunta = ()=>{
 } 
 
 export const startCambiarEnunciado = (index, enunciado='' )=>{
-    console.log("okkdclksmvñsd: "+ index + " - "+ enunciado )
     return dispatch => dispatch(cambiarEnunciado({index,enunciado}));
 }
 
@@ -53,7 +55,86 @@ export const startCambiarDescripcion = (descripcion)=>{
     return dispatch => dispatch(cambiarDescripcion({descripcion}));
 }
 
-export const startPublicarEncuesta = ()=>{
+export const startPublicarEncuesta = (encuesta = {})=>{
 
+    return async dispatch => {
+        try{
+           
+            console.log(encuesta);
+
+            
+            const URL_POST = `/encuesta/publicar/${encuesta.poblacion}`;
+
+            const encuestaAPublicar = {
+                id_encuesta: encuesta.index,
+                titulo: encuesta.titulo,
+                descripcion: encuesta.descripcion,
+                id_poblacion: encuesta.poblacion,
+                fechacierre: encuesta.fechaCierre
+            }
+            const publicar = await ufpsformsApi.post(URL_POST,encuestaAPublicar);
+            const {data} = publicar;
+            const {insertId} = data;
+            console.log("encuesta Publicada: "+ insertId);
+
+            const URL_PREGUNTA = `/pregunta/agregarpregunta/${insertId}`;
+
+            await publicarPreguntas(URL_PREGUNTA,insertId,encuesta.preguntas);      
+
+
+        }
+    
+        catch(error){
+    
+            return {
+                error: `Ah ocurrido un error al publicar la encuesta: ${error}` 
+            }
+        }
+    }    
+    
 }
 
+
+const publicarPreguntas = async(URL, id, preguntas = [])=>{
+    
+    try {
+        await preguntas.forEach(async preg => {
+            const pregunta = {
+                id_pregunta: preg.indice,
+                enunciado: preg.enunciado,
+                id_encuesta: id,
+                tipo: 0
+            }
+            const publicar = await ufpsformsApi.post(URL,pregunta);
+            const {data} = publicar;
+            const {insertId} = data;
+            console.log("Funciona pregunta: "+ data);
+            const url_opcion = `/opcion/agregaropcion/${insertId}`
+            await publicarOpciones(url_opcion, insertId , preg.opciones);
+
+        });
+    } catch (error) {
+        return "Ha ocurrido un error: "+ error;
+    }
+    
+}
+
+const publicarOpciones = async(URL, id ,opciones= []) =>{
+    
+    try {
+        await opciones.forEach(async opcion =>{
+            console.log('Insertanto:.... ' + opcion.valor + " - "+ opcion.texto + " " + id  );
+            console.log('Opcion --> '+ opcion)
+            const opcionApublicar = {
+                id_opcion   : opcion.valor,
+                texto       : opcion.enunciadoOpcion,
+                id_pregunta : id
+            }
+            const {data} = await ufpsformsApi.post(URL,opcionApublicar);
+            console.log("Funciona: "+ data);
+        })    
+    } catch (error) {
+        return "Ha ocurrido un error "+ error;
+    }
+    
+}

@@ -61,7 +61,6 @@ export const crearSlice = createSlice({
          * @param {payload} payload Contiene el nuevo enunciado y el indice.
          */
         cambiarEnunciado: (state,{payload})=>{
-            console.log(payload)
             state.preguntas[payload.index].enunciado = payload.enunciado; 
         },
 
@@ -86,9 +85,11 @@ export const crearSlice = createSlice({
         eliminarOpcion: (state,{payload})=>{
             state.preguntas[payload.indice].opciones.pop();
         },
+
         cambiarPoblacion: (state,{payload})=>{
             state.poblacion = payload.poblacion; 
         },
+
         cambiarFechaDeCierre: (state, {payload})=>{
             state.fechaCierre = payload.fechaCierre;
         },
@@ -96,10 +97,13 @@ export const crearSlice = createSlice({
         cambiarDescripcion: (state, {payload}) =>{
             state.descripcion = payload.descripcion;
         },
+
         publicarEncuesta: (state,{ payload })=>{
             
             state.titulo = payload.titulo;
-        }
+        },
+
+        
 
 
     }
@@ -116,4 +120,5 @@ export const {
     cambiarPoblacion,
     cambiarFechaDeCierre,
     cambiarDescripcion,
+    
 } = crearSlice.actions;

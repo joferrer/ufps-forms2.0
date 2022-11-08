@@ -30,7 +30,6 @@ export const poblacionesSlice = createSlice({
                 const p = state.poblaciones[i];
                 if(p.id_poblacion === payload.id_poblacion) indice = i;
             }
-            console.log("aaaa: "+indice)
             if(indice != -1) state.poblaciones[indice].listaEncuestados = payload.listaEncuestados; // listaEncuestados
         },
         /**

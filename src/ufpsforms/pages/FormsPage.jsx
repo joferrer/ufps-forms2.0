@@ -7,20 +7,26 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Tabla } from "../components"
 import { startLoadingEncuestas } from "../../store/encuestas"
+import { startCargarEncuestadosPorPoblacion, startSetPoblaciones } from "../../store/poblaciones/thunksPoblaciones"
 
 
 
 export const FormsPage = () => {
 
   const dispatch = useDispatch();
-  const {encuestas} = useSelector(state => state.encuestas)
+  const {encuestas} = useSelector(state => state.encuestas);
+  const {poblaciones} = useSelector(state => state.poblaciones);
 
   const cargarEncuestas = ()=>{
     dispatch(startLoadingEncuestas());
   }
+  const cargarPoblaciones = ()=>{
+    dispatch(startSetPoblaciones());
+  }
 
   useEffect(() => {
     cargarEncuestas();
+    cargarPoblaciones();
   
     
   }, [])

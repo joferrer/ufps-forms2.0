@@ -11,8 +11,13 @@ import { SaveOutlined } from '@mui/icons-material';
 import { Preguntas } from '../components';
 
 
-import { startCambiarDescripcion, startCambiarFechaCierre, startCambiarPoblacion, startCambiarTituloEncuesta } from '../../store/crearEncuesta';
+import { startCambiarDescripcion, startCambiarFechaCierre, startCambiarPoblacion, startCambiarTituloEncuesta, startPublicarEncuesta } from '../../store/crearEncuesta';
 
+import {useGetDatosEncuesta} from '../../hooks'
+import { useMemo } from 'react';
+import { startSetPoblaciones } from '../../store/poblaciones/thunksPoblaciones';
+
+const poblacionInit = [{id_poblacion: 9, nombre: ""}]
 
 const initialState = {
   id_encuesta : '',
@@ -33,30 +38,47 @@ export const CrearFormPage = memo(() => {
   const [poblacion, setPoblacion] = useState('');
   const [fechaCierre, setFechaCierre] = useState(fechaActual);
   const [errorFormulario, setErrorFormulario] = useState(false);
+  const datosEncuesta = useGetDatosEncuesta();
+  const {poblaciones} = useSelector(state => state.poblaciones);
+
+
 
   const dispatch = useDispatch();
-  const {} = useSelector(state => state.crearEncuesta)
-
+  
+ 
   
 
   const handleChange = (event) => {
+    dispatch(startCambiarPoblacion(event.target.value));
     setPoblacion(event.target.value);
+    
   };
 
   const onSubmit = (event)=>{
     event.preventDefault();
+    dispatch(startCambiarTituloEncuesta(nombre));
+    dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
+    dispatch(startCambiarDescripcion(descripcion));  
+
     console.log(fechaCierre.toISOString());
     if(poblacion === '' || fechaCierre.isBefore(fechaActual) ){
       setErrorFormulario(true);
       return;
     }
-    dispatch(startCambiarPoblacion(poblacion));
-    dispatch(startCambiarTituloEncuesta(nombre));
-    dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
-    dispatch(startCambiarDescripcion(descripcion));
+    
+    
+    datosEncuesta.fechaCierre = datosEncuesta.fechaCierre.replace("T"," ");
+    datosEncuesta.fechaCierre = datosEncuesta.fechaCierre.replace("Z","");
+    datosEncuesta.titulo      = nombre;
+    datosEncuesta.descripcion = descripcion;
+    
+    console.log('Datos encuesta: '+ datosEncuesta);
+    dispatch(startPublicarEncuesta(datosEncuesta));
 
     //TODO: PUBLICAR SUBMIT PUBLICAR ENCUESTA
     
+      
+
   }
 
   return (
@@ -77,9 +99,9 @@ export const CrearFormPage = memo(() => {
                           label="Población"
                           onChange={handleChange}
                         >
-                          <MenuItem value={0}>Estudiantes</MenuItem>
-                          <MenuItem value={1}>Profesores</MenuItem>
-                          <MenuItem value={2}>Graduados</MenuItem>
+                          <MenuItem value={9}>Estudiantes</MenuItem>
+                          <MenuItem value={10}>Profesores</MenuItem>
+                          <MenuItem value={11}>Graduados</MenuItem>
                         </Select>
                         <FormHelperText>{errorFormulario? 'Por favor, seleccione una población':''}</FormHelperText>
                       </FormControl>
