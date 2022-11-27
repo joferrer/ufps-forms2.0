@@ -85,10 +85,10 @@ const DrawerComp = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open'
 export const  SideBar=(props)=> {
   const {children} = props;
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const dispatch = useDispatch();
-  const {esAdministrador, photoURL} = useSelector(state => state.auth);
+  const {esAdministrador, photoURL,poblacion} = useSelector(state => state.auth);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -108,39 +108,57 @@ export const  SideBar=(props)=> {
         title='Ufps Forms' 
         handleDrawerOpen={handleDrawerOpen} 
         drawerwidth={drawerWidth}
-        open={open}
+        open={poblacion ==0 ? open: false}
         
         />
       
+          {
+            poblacion == 0 ? (
+              <>
+                <DrawerComp variant="permanent" open={open} >
+                  <DrawerHeader>
+                    <Avatar 
+                      src ={photoURL!='' ? `${photoURL}` :'' }
+                      sx={{ width: 56, height: 56, marginRight: '50px',bgcolor: ufpstheme.palette.primary.main } }>
+                      
+                    </Avatar>
+                    <IconButton color='primary' onClick={handleDrawerClose}>
+                      {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
+                    </IconButton>
+                  </DrawerHeader>
+                  
+                  {/**
+                   * Lista de items que se muestran en la SideBar
+                   */}
+                  <SideBarItemList/>
 
-      <DrawerComp variant="permanent" open={open} >
-        <DrawerHeader>
-          <Avatar 
-            src ={photoURL!='' ? `${photoURL}` :'' }
-            sx={{ width: 56, height: 56, marginRight: '50px',bgcolor: ufpstheme.palette.primary.main } }>
-            
-          </Avatar>
-          <IconButton color='primary' onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
-          </IconButton>
-        </DrawerHeader>
-        
-        {/**
-         * Lista de items que se muestran en la SideBar
-         */}
-        <SideBarItemList/>
+                  <Divider />
+                  
+                </DrawerComp>
+                <Box  sx={{ flexGrow: 1, p: 3 }}>
+                  <DrawerHeader />
 
-        <Divider />
-        
-      </DrawerComp>
-      <Box  sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+                  {/** Aca va  el contenido de la pagina */}
+                  {children}
+                  
+                  
+                </Box>
+              </>
+            )
+            :
+            <>
+                <Box  sx={{ flexGrow: 1, p: 3 }}>
+                  <DrawerHeader />
 
-        {/** Aca va  el contenido de la pagina */}
-        {children}
-        
-        
-      </Box>
+                  {/** Aca va  el contenido de la pagina */}
+                  {children}
+                  
+                  
+                </Box>
+            </>
+
+          }
+
     </Box>
   );
 }
