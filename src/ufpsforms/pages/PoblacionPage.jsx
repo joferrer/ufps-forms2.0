@@ -13,13 +13,12 @@ import readXlsxFile from 'read-excel-file';
 
 
 export const PoblacionPage = () => {
+
   const location = useLocation();
   const {search} = location;
   const dispatch = useDispatch();
   const {poblaciones} = useSelector(state => state.poblaciones);
-  
   const [listaPoblacion, setListaPoblacion] = useState([]);
-
   const [poblacion,setPoblacion] = useState([]);
   const [modificado, setModificado] = useState(false);
 

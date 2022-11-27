@@ -22,7 +22,8 @@ export const encuestasSlice = createSlice({
         },
         setError: (state, {payload})=>{
             state.error = payload.error;
-        }
+        },
+        
 
     }
 })

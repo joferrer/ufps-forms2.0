@@ -5,7 +5,7 @@ import { UfpsFormsLayout } from "../layout/UfpsFormsLayout"
 import { NothingSelectedView } from "../views/NothingSelectedView"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Tabla } from "../components"
+import { TablaEncuestas } from "../components"
 import { startLoadingEncuestas } from "../../store/encuestas"
 import { startCargarEncuestadosPorPoblacion, startSetPoblaciones } from "../../store/poblaciones/thunksPoblaciones"
 
@@ -37,7 +37,7 @@ export const FormsPage = () => {
         <UfpsFormsLayout >
           {
             encuestas.length === 0 ? <NothingSelectedView/>
-            :<Tabla cabeceras={['ID','Titulo','Población','Decripción','Fecha de cierre']} filas={encuestas}></Tabla>
+            :<TablaEncuestas cabeceras={['ID','Titulo','Población','Decripción','Fecha de cierre','Eliminar']} filas={encuestas}></TablaEncuestas>
           }
           
            

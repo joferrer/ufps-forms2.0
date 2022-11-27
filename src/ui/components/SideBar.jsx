@@ -7,6 +7,7 @@ import {ChevronLeft,ChevronRight} from '@mui/icons-material';
 import { ufpstheme } from '../../theme/ufpstheme';
 import { NavBar } from './NavBar';
 import { SideBarItemList } from './SideBarItemList';
+import { useDispatch, useSelector } from 'react-redux';
 
 /**
  * Width de la SideBar
@@ -86,6 +87,9 @@ export const  SideBar=(props)=> {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
+  const dispatch = useDispatch();
+  const {esAdministrador, photoURL} = useSelector(state => state.auth);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -112,7 +116,10 @@ export const  SideBar=(props)=> {
       <DrawerComp variant="permanent" open={open} >
         <DrawerHeader>
           <Avatar 
-          sx={{ width: 56, height: 56, marginRight: '50px',bgcolor: ufpstheme.palette.primary.main } }>A</Avatar>
+            src ={photoURL!='' ? `${photoURL}` :'' }
+            sx={{ width: 56, height: 56, marginRight: '50px',bgcolor: ufpstheme.palette.primary.main } }>
+            
+          </Avatar>
           <IconButton color='primary' onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
