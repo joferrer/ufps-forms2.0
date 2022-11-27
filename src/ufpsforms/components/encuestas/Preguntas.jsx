@@ -10,6 +10,8 @@ export const Preguntas = memo(() => {
     
     const dispatch = useDispatch();
     const {preguntas} = useSelector(state => state.crearEncuesta);
+    
+    const {poblacion} = useSelector(state => state.auth);
 
 
     const onAgregarPregunta = ()=>{
@@ -29,7 +31,9 @@ export const Preguntas = memo(() => {
             }
         </Grid>
          <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'space-between' }}>
-                  <Box sx={{ minWidth: 200 }}>
+          {
+            poblacion == 0 ? 
+            <Box sx={{ minWidth: 200 }}>
                     <Button color="primary"
                           sx={{padding: 2}}
                           onClick={onAgregarPregunta}
@@ -39,6 +43,10 @@ export const Preguntas = memo(() => {
                     </Button>
                     
                   </Box>
+            :
+            <></>
+          }
+                  
 
         </Grid>
     </>

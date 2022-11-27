@@ -50,7 +50,7 @@ export const startLoginWithEmailPassword = ({email, password})=>{
             const {ok,uid,displayName, photoURL, errorMessage} = await loginWithEmailPassword({email, password});
 
             if(!ok) return dispatch(logout({errorMessage}));
-
+            console.log("Poblacion: "+poblacion)
             dispatch(login({uid, displayName,email,photoURL,poblacion}));
         }
         else{

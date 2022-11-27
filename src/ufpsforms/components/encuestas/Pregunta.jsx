@@ -18,6 +18,7 @@ export const Pregunta = memo(({pregunta}) => {
 
     const dispatch = useDispatch();
     const {preguntas} = useSelector(state => state.crearEncuesta);
+    const {poblacion} = useSelector(state => state.auth);
 
     const opciones = useMemo(()=>  preguntas[indice].opciones, [preguntas[indice].opciones]);
     const [value, setValue] = useState(0);
@@ -58,6 +59,7 @@ export const Pregunta = memo(({pregunta}) => {
                     onChange= { onInputChange }
                     error= { !!enunciadoPreguntaValid && formSubmitted}
                     helperText = {enunciadoPreguntaValid }
+                    disabled = {poblacion != 0}
                     />
             </Grid>
             <Grid item xs={12} sx={{ mt: 2 }}>
@@ -78,7 +80,10 @@ export const Pregunta = memo(({pregunta}) => {
             </FormControl>
             </Grid>
             <Grid item xs={1} sx={{ mt: 1, width: "100%" , display: 'flex', justifyContent: 'space-between' }}>
-                  <Box sx={{ minWidth: 200 }}>
+              {
+                poblacion == 0 ? 
+                <>
+                    <Box sx={{ minWidth: 200 }}>
                     <Button color="primary"
                           sx={{padding: 2}}
                           onClick={onAgregarOpcion}
@@ -98,6 +103,11 @@ export const Pregunta = memo(({pregunta}) => {
                     </Button>
                     
                   </Box>
+                </>
+                :
+                <></>
+              }
+                  
 
         </Grid>
         <Divider/>

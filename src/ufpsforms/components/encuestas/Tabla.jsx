@@ -15,6 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 export const TablaEncuestas = ({cabeceras, filas}) => {
 
     const {encuestas} = useSelector(state => state.encuestas);
+    const {poblacion} = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
     const onDeleteEncuesta = async(event)=>{
@@ -61,9 +62,17 @@ export const TablaEncuestas = ({cabeceras, filas}) => {
 
                                 ))
                             }
-                            <TableCell key={`columna-tabla-delete: ${index}`}>
-                                <Button onClick={()=>onDeleteEncuesta(index)}><DeleteOutlineOutlined/></Button>
-                            </TableCell>
+                            {
+                                poblacion == 0 ? 
+                                    <TableCell key={`columna-tabla-delete: ${index}`}>
+                                        <Button onClick={()=>onDeleteEncuesta(index)}><DeleteOutlineOutlined/></Button>
+                                    </TableCell>
+                                    :
+                                    <TableCell key={`columna-tabla: ${index}`} >
+                                                <Link to={`/responder?encuesta=${fila.id_encuestas}`}><ArrowForwardOutlined /></Link>
+                                    </TableCell>
+                            }
+                            
                         </TableRow>                       
                     ))
                     

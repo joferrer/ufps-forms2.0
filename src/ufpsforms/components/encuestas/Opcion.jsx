@@ -9,7 +9,7 @@ export const Opcion = memo(({pregunta, valor}) => {
 
     const dispatch = useDispatch();
     const {preguntas} = useSelector(state => state.crearEncuesta);
-
+    const {poblacion} = useSelector(state => state.auth);
     const indice = pregunta.indice;
 
 
@@ -37,6 +37,7 @@ export const Opcion = memo(({pregunta, valor}) => {
         onChange= { onInputChange }
         error= { !!enunciadoOpcionValid && formSubmitted}
         helperText = {enunciadoOpcionValid }
+        disabled = {poblacion != 0}
 
         />} />
   )

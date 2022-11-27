@@ -36,27 +36,21 @@ export const ResponderEncuesta = memo(() => {
 
   const [formSubmitted, setformSubmitted] = useState(false);
   const {nombre, descripcion , formState, nombreValid, descripcionValid, onInputChange} = useForm(initialState);
-  const [poblacion, setPoblacion] = useState('');
   const [fechaCierre, setFechaCierre] = useState(fechaActual);
   const [errorFormulario, setErrorFormulario] = useState(false);
   const datosEncuesta = useGetDatosEncuesta();
   const {poblaciones} = useSelector(state => state.poblaciones);
+  const {poblacion} = useSelector(state => state.auth);
+  
   const location  = useLocation();
 
 
   const dispatch = useDispatch();
   
- 
-  
-
-  const handleChange = (event) => {
-    dispatch(startCambiarPoblacion(event.target.value));
-    setPoblacion(event.target.value);
-    
-  };
 
   const onSubmit = async (event)=>{
     event.preventDefault();
+    /** 
     dispatch(startCambiarTituloEncuesta(nombre));
     dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
     dispatch(startCambiarDescripcion(descripcion));  
@@ -66,7 +60,6 @@ export const ResponderEncuesta = memo(() => {
       setErrorFormulario(true);
       return;
     }
-    
     
     datosEncuesta.fechaCierre = datosEncuesta.fechaCierre.replace("T"," ");
     datosEncuesta.fechaCierre = datosEncuesta.fechaCierre.replace("Z","");
@@ -80,10 +73,8 @@ export const ResponderEncuesta = memo(() => {
     if(!publicarEncuesta.error){
       window.location = "/" 
     }
-    setErrorFormulario(true)
- 
-      
-
+    setErrorFormulario(true)      
+    */
   }
 
   return (
@@ -109,6 +100,7 @@ export const ResponderEncuesta = memo(() => {
                     onChange= { onInputChange }
                     error= { !!nombreValid && formSubmitted}
                     helperText = {nombreValid }
+                    disabled={poblacion != 0}
 
                     />
               </Grid>
@@ -125,6 +117,7 @@ export const ResponderEncuesta = memo(() => {
                     helperText = {descripcionValid }
                     multiline
                     minRows={5}
+                    disabled={poblacion != 0}
                     />
               </Grid>
               
@@ -139,7 +132,7 @@ export const ResponderEncuesta = memo(() => {
                           onClick={onSubmit}
                           >
                       <SaveOutlined sx={{fontSize: 30, mr: 1 }}/>
-                      Publicar
+                      Enviar
                     </Button>
                     
                   </Box>

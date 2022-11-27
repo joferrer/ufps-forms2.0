@@ -1,15 +1,39 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { startLoadingEncuestas } from '../../../store/encuestas';
+import { startSetPoblaciones } from '../../../store/poblaciones';
+import { TablaEncuestas } from '../../components';
 import { UfpsFormsLayout } from '../../layout/UfpsFormsLayout';
+import { NothingSelectedView } from '../../views/NothingSelectedView';
 
 export const EncuestasDisponiblesPage = () => {
+    const dispatch = useDispatch();
+
     const {poblacion} = useSelector(state => state.auth);
+    const {encuestas} = useSelector(state => state.encuestas);
 
+    const cargarEncuestas = ()=>{
+        dispatch(startLoadingEncuestas());
+      }
+    const cargarPoblaciones = ()=>{
+       dispatch(startSetPoblaciones());
+    }
+    
+      useEffect(() => {
+        cargarEncuestas();
+        cargarPoblaciones();
+      
+        
+      }, [])
 
+    const encuestasPoblacion = useMemo(() => encuestas.filter(encuesta => encuesta.id_poblacion == poblacion), [encuestas])
     return (
         <UfpsFormsLayout>
-            <h1>EncuestasDisponiblesPage</h1>
-            <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt enim maxime nostrum ex recusandae reprehenderit minus facere aperiam minima eos ipsum illo impedit nemo sunt quidem fuga, magni libero ea! Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, recusandae? Perspiciatis tempora error soluta non eum exercitationem, pariatur maiores cumque sint architecto doloremque fuga ullam corrupti labore iusto quos! Eius! Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet non dolore aliquid eos vero error quidem assumenda, quo sit ducimus inventore voluptatem debitis explicabo est modi, eveniet illum cupiditate eligendi!</div>
+            <h1>Encuestas disponibles para ti: </h1>
+            {
+                encuestas.length === 0 ? <NothingSelectedView/>
+                :<TablaEncuestas cabeceras={['ID','Titulo','Población','Decripción','Fecha de cierre']} filas={encuestasPoblacion}></TablaEncuestas>
+            }
         </UfpsFormsLayout>
         
     )
