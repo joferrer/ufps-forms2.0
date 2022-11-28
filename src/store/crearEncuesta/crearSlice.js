@@ -41,7 +41,20 @@ export const crearSlice = createSlice({
             }]
         }
             state.preguntas = [...state.preguntas , nuevaPregunta];
-        }, 
+        },
+        insertarPregunta: (state, {payload})=>{
+            const nuevaPregunta = {
+            indice: state.preguntas.length,
+            enunciado: payload.enunciado,
+            opciones: payload.opciones
+        }
+            state.preguntas = [...state.preguntas , nuevaPregunta];
+        }
+        ,
+        cambiarPreguntas : (state, {payload})=>{
+            state.preguntas = payload.preguntas;
+        } 
+        ,
         /**
          * Recibe el indice de la pregunta que se va a eliminar. 
          * @param {*} state 
@@ -103,6 +116,12 @@ export const crearSlice = createSlice({
             state.titulo = payload.titulo;
         },
 
+        cambiarIdEncuesta : (state, {payload})=>{
+            state.index = payload.index;
+        },
+        darCantidadPreguntas: (state)=>{
+            return state.preguntas.length;
+        }
         
 
 
@@ -120,5 +139,9 @@ export const {
     cambiarPoblacion,
     cambiarFechaDeCierre,
     cambiarDescripcion,
+    cambiarIdEncuesta,
+    insertarPregunta,
+    darCantidadPreguntas,
+    cambiarPreguntas
     
 } = crearSlice.actions;

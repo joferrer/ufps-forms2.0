@@ -5,7 +5,7 @@ import { FormControlLabel,Radio, TextField } from "@mui/material"
 import { useForm } from "../../../hooks/useForm"
 import { startModificarOpcion } from "../../../store/crearEncuesta";
 
-export const Opcion = memo(({pregunta, valor}) => {
+export const ResponderOpcion = memo(({pregunta, valor}) => {
 
     const dispatch = useDispatch();
     const {preguntas} = useSelector(state => state.crearEncuesta);
@@ -13,7 +13,7 @@ export const Opcion = memo(({pregunta, valor}) => {
     const indice = pregunta.indice;
 
 
-    const opciones = preguntas[indice].opciones;
+    const {opciones} = pregunta;
     const {texto} = opciones[valor]; 
 
     const {enunciadoOpcion, enunciadoOpcionValid, formSubmitted ,onInputChange} = useForm({enunciadoOpcion: texto});
