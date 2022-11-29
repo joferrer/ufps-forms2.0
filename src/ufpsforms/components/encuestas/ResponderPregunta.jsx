@@ -11,9 +11,10 @@ import { memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { startAgregarOpcion, startCambiarEnunciado, startEliminarOpcion } from '../../../store/crearEncuesta';
 import { ResponderOpcion } from './ResponderOpcion';
+import { startCrearRespuesta } from '../../../store/respuestas';
 
 
-export const ResponderPregunta = memo(({pregunta}) => {
+export const ResponderPregunta = memo(({pregunta, pos}) => {
 
     const {enunciadoPregunta,enunciadoPreguntaValid, formSubmitted ,onInputChange} = useForm(); 
     const {indice} = pregunta;
@@ -38,6 +39,8 @@ export const ResponderPregunta = memo(({pregunta}) => {
 
     const handleChange = (event) => {
         setValue(event.target.value);
+        const id_opcion = opciones[event.target.value].id_opcion;
+        dispatch(startCrearRespuesta(pos,id_opcion,indice));
     };
     
   

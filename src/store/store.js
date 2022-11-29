@@ -3,6 +3,7 @@ import { authSlice } from './auth/authSlice';
 import { crearSlice } from './crearEncuesta';
 import { encuestasSlice } from './encuestas';
 import { poblacionesSlice } from './poblaciones';
+import { respuestasSlice } from './respuestas';
 
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     auth: authSlice.reducer,
     crearEncuesta: crearSlice.reducer,
     encuestas: encuestasSlice.reducer,
-    poblaciones: poblacionesSlice.reducer
+    poblaciones: poblacionesSlice.reducer,
+    respuestas: respuestasSlice.reducer,
   },
 })

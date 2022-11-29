@@ -18,6 +18,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { startCargarEncuesta } from '../../../store/crearEncuesta/thunksResponder';
 import { ResponderPreguntas } from '../../components/encuestas/ResponderPreguntas';
+import { startResponderEncuesta } from '../../../store/respuestas';
 
 const poblacionInit = [{id_poblacion: 9, nombre: ""}]
 
@@ -42,9 +43,10 @@ export const ResponderEncuesta = memo(() => {
   const datosEncuesta = useGetDatosEncuesta();
   const {poblaciones} = useSelector(state => state.poblaciones);
   const {poblacion} = useSelector(state => state.auth);
-  
+  const {respuestas} = useSelector(state => state.respuestas);
+
   const encuestaDatos = useSelector(state => state.crearEncuesta);
-  console.log("TITULO ENCUESTAS: "+ encuestaDatos.titulo);
+  
   const location  = useLocation();
   const {search} = location;
   
@@ -54,35 +56,17 @@ export const ResponderEncuesta = memo(() => {
         encuestaDatos.preguntas.length == 1 && dispatch(startCargarEncuesta(search.split('=')[1]))
         , []);
   
-  
+ 
 
   const onSubmit = async (event)=>{
     event.preventDefault();
-    /** 
-    dispatch(startCambiarTituloEncuesta(nombre));
-    dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
-    dispatch(startCambiarDescripcion(descripcion));  
-
-    console.log(fechaCierre.toISOString());
-    if(poblacion === '' || fechaCierre.isBefore(fechaActual) ){
+    
+    const resp = await dispatch(startResponderEncuesta(respuestas));  
+    if (!!resp.error){
       setErrorFormulario(true);
-      return;
+      
     }
-    
-    datosEncuesta.fechaCierre = datosEncuesta.fechaCierre.replace("T"," ");
-    datosEncuesta.fechaCierre = datosEncuesta.fechaCierre.replace("Z","");
-    datosEncuesta.titulo      = nombre;
-    datosEncuesta.descripcion = descripcion;
-    
-    console.log('Datos encuesta: '+ datosEncuesta);
-   const publicarEncuesta = await dispatch(startPublicarEncuesta(datosEncuesta));
-
-   //TODO:HAY UN ERROR, AL PARECER SE PUBLICAN LA ENCUESTAS PERO NO LAS PREGUNTAS NI LAS OPCIONES :(   
-    if(!publicarEncuesta.error){
-      window.location = "/" 
-    }
-    setErrorFormulario(true)      
-    */
+    else window.location.href = "/";
   }
 
   return (

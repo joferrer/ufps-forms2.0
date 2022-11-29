@@ -1,13 +1,11 @@
-import { SideBar } from "../../ui"
-import Typography from '@mui/material/Typography'
-import { CrearFormPage } from "./CrearFormPage"
+
 import { UfpsFormsLayout } from "../layout/UfpsFormsLayout"
 import { NothingSelectedView } from "../views/NothingSelectedView"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { TablaEncuestas } from "../components"
 import { startLoadingEncuestas } from "../../store/encuestas"
-import { startCargarEncuestadosPorPoblacion, startSetPoblaciones } from "../../store/poblaciones/thunksPoblaciones"
+import { startSetPoblaciones } from "../../store/poblaciones/thunksPoblaciones"
 
 
 

@@ -33,7 +33,7 @@ const traerOpciones = async(pregunta = 0) =>{
         const URL_OPCIONES = `/opcion/opciones/${pregunta}`;
         //Array con las preguntas-Si no hay devuelve []
         const data =     await consultarApi(URL_OPCIONES);    
-        const opciones = await data.map((opcion,index)=>({valor: index , texto: opcion.texto}))
+        const opciones = await data.map((opcion,index)=>({id_opcion: opcion.id_opcion ,valor: index , texto: opcion.texto}))
         console.log("ahHHHHHHHHHHHHHHHHHH: "+ JSON.stringify(opciones))
         
         return opciones;

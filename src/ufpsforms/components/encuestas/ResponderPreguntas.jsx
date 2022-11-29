@@ -27,7 +27,7 @@ export const ResponderPreguntas = memo(() => {
             {
                 preguntas.map((pregunta,index)=>(
                 
-                    <ResponderPregunta key={index+"."+"Pregunta "+pregunta.index} pregunta={pregunta} />)
+                    <ResponderPregunta key={index+"."+"Pregunta "+pregunta.index} pregunta={pregunta} pos={index}/>)
                 )
             }
         </Grid>

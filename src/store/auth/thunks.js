@@ -1,7 +1,6 @@
-import { async } from "@firebase/util";
-import { Co2Sharp } from "@mui/icons-material";
+
 import { loginWithEmailPassword, logoutFireBase, registerUserWithEmailPassword, singInWithGoogle } from "../../firebase/provider";
-import { consultarApi, ufpsformsApi } from "../api/ufpsformsApi";
+import { consultarApi } from "../api/ufpsformsApi";
 import { checkingCredentials, logout, login } from "./"
 
 
@@ -20,8 +19,9 @@ export const startGoogleSingIn = ( email, password) =>{
         const poblacion = await verificarPoblacion(result.email);
         const datos = {
             ...result,
-            poblacion
+            poblacion: poblacion
         }
+        console.log("POBLACION PERDIDA 1" + poblacion);
         return dispatch( login( datos ) );
 
         
@@ -47,13 +47,13 @@ export const startLoginWithEmailPassword = ({email, password})=>{
         dispatch(checkingAuthentication());
         const poblacion = await verificarPoblacion(email);
         if(poblacion != `El correo ${email} no se encuetra registrado`){
+            console.log("POBLACION PERDIDA 2.1");
             const {ok,uid,displayName, photoURL, errorMessage} = await loginWithEmailPassword({email, password});
-
             if(!ok) return dispatch(logout({errorMessage}));
-            console.log("Poblacion: "+poblacion)
             dispatch(login({uid, displayName,email,photoURL,poblacion}));
         }
         else{
+            console.log("POBLACION PERDIDA 2");
             return dispatch(logout({errorMessage: 'Este correo no se encuentra registrado'}));
         }
         
@@ -74,7 +74,7 @@ export const startLogout = ()=>{
  * 4. Consultar si es graduado, SI NO
  * 5. Negar inicio de sección. 
  */
-const verificarPoblacion = async(correo = '')=>{
+export const verificarPoblacion = async(correo = '')=>{
 
     
     try {
@@ -92,6 +92,7 @@ const verificarPoblacion = async(correo = '')=>{
 
 
     } catch (error) {
+        console.log("POBLACION PERDIDA 3");
         return `El correo ${correo} no se encuetra registrado`
     }
    
