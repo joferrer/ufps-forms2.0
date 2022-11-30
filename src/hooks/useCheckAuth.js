@@ -14,13 +14,12 @@ export const useCheckAuth = () => {
       onAuthStateChanged(FireBaseAuth , async( user )=>{
         if(!user) return dispatch( logout() );
         const {uid, displayName, email, photoURL} = user;
-        const poblacion = await verificarPoblacion(email);
-        dispatch(login({uid,displayName,email, photoURL,poblacion}));
+        const {poblacion, id_encuestado} = await verificarPoblacion(email);
+        dispatch(login({uid,displayName,email, photoURL,poblacion, id_encuestado}));
       } );
     
     }, [])
-
-
+  
     return {status}
   
 }

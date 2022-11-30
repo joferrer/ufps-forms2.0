@@ -16,10 +16,11 @@ export const startGoogleSingIn = ( email, password) =>{
         const result = await singInWithGoogle();
 
         if(!result.ok) return dispatch( logout(result.errorMessage) );
-        const poblacion = await verificarPoblacion(result.email);
+        const {poblacion, id_encuestado} = await verificarPoblacion(email);
         const datos = {
             ...result,
-            poblacion: poblacion
+            poblacion: poblacion,
+            id_encuestado
         }
         console.log("POBLACION PERDIDA 1" + poblacion);
         return dispatch( login( datos ) );
@@ -45,12 +46,12 @@ export const startLoginWithEmailPassword = ({email, password})=>{
  
     return async(dispatch) =>{
         dispatch(checkingAuthentication());
-        const poblacion = await verificarPoblacion(email);
+        const {poblacion, id_encuestado} = await verificarPoblacion(email);
         if(poblacion != `El correo ${email} no se encuetra registrado`){
             console.log("POBLACION PERDIDA 2.1");
             const {ok,uid,displayName, photoURL, errorMessage} = await loginWithEmailPassword({email, password});
             if(!ok) return dispatch(logout({errorMessage}));
-            dispatch(login({uid, displayName,email,photoURL,poblacion}));
+            dispatch(login({uid, displayName,email,photoURL,poblacion,id_encuestado}));
         }
         else{
             console.log("POBLACION PERDIDA 2");
@@ -80,13 +81,20 @@ export const verificarPoblacion = async(correo = '')=>{
     try {
         const URL = `/admin/registrados/${correo}`;
         const consultaAdmin = await consultarApi(URL);
-        if(consultaAdmin.length != 0) return 0
+        if(consultaAdmin.length != 0) return {
+            poblacion: 0,
+            id_encuestado: consultaAdmin.id_encuestado
+        }
         
         const encuestadosURL = `/encuestado/mostrar`;
         const consultaEncuestados = await consultarApi(encuestadosURL);
         if(consultaEncuestados.length > 0){
             console.log("a ver");
-            return consultaEncuestados.find(encuestado => encuestado.correo == correo).id_poblacion;
+            const {id_poblacion, id_encuestado} = consultaEncuestados.find(encuestado => encuestado.correo == correo);
+            return {
+                poblacion: id_poblacion,
+                id_encuestado
+            };
         }
             
 

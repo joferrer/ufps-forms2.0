@@ -12,7 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
  * @param {*} param0 
  * @returns 
  */
-export const TablaEncuestas = ({cabeceras, filas}) => {
+export const TablaFinalizadas = ({cabeceras, filas}) => {
 
     const {encuestas} = useSelector(state => state.encuestas);
     const {poblacion} = useSelector(state => state.auth)
@@ -54,20 +54,21 @@ export const TablaEncuestas = ({cabeceras, filas}) => {
                                         <TableCell key={`columna-tabla: ${index}`} >{fila[valor]}</TableCell>
                                     : 
                                     <TableCell key={`columna-tabla: ${index}`} >
-                                        <Link to={`/poblacion?p=${index}`}><ArrowForwardOutlined /></Link>
+                                        <Link to={`/encuestas/respuestas?p=${fila['id_encuestas']}`}><ArrowForwardOutlined /></Link>
                                     </TableCell>
 
                                 ))
                             }
+                            <TableCell key={`columna-tabla: ${index}`} >
+                                <Link to={`/encuestas/respuestas?p=${fila['id_encuestas']}`}><ArrowForwardOutlined /></Link>
+                            </TableCell>
                             {
                                 poblacion == 0 ? 
                                     <TableCell key={`columna-tabla-delete: ${index}`}>
                                         <Button onClick={()=>onDeleteEncuesta(index)}><DeleteOutlineOutlined/></Button>
                                     </TableCell>
                                     :
-                                    <TableCell key={`columna-tabla: ${index}`} >
-                                                <Link to={`/responder?encuesta=${fila.id_encuestas}`}><ArrowForwardOutlined /></Link>
-                                    </TableCell>
+                                    <></>
                             }
                             
                         </TableRow>                       

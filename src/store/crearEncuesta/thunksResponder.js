@@ -8,14 +8,12 @@ export const startCargarEncuesta = (encuestaId = 1)=>{
             const URL_ENCUESTA = `/encuesta/encuestas/encuesta/${encuestaId}`;
             const encuesta = await consultarApi(URL_ENCUESTA);
             const {titulo,descripcion, id_encuestas} = encuesta[0];
-            console.log('TITULO: '+ titulo)
+
             dispatch(cambiarTitulo({titulo}));
             dispatch(cambiarDescripcion({descripcion}));
             dispatch(cambiarIdEncuesta({index: id_encuestas}));
 
             const preguntas = await traerPreguntas(encuestaId);
-            console.log("PREGUNTAS LENGHT: " + preguntas.length);
-            console.log("PREGUNTA 0: " + preguntas[0].enunciado);
             dispatch(cambiarPreguntas({preguntas}));
             
         } catch (error) {
@@ -34,7 +32,6 @@ const traerOpciones = async(pregunta = 0) =>{
         //Array con las preguntas-Si no hay devuelve []
         const data =     await consultarApi(URL_OPCIONES);    
         const opciones = await data.map((opcion,index)=>({id_opcion: opcion.id_opcion ,valor: index , texto: opcion.texto}))
-        console.log("ahHHHHHHHHHHHHHHHHHH: "+ JSON.stringify(opciones))
         
         return opciones;
     } catch (error) {
@@ -56,8 +53,6 @@ const traerPreguntas = async(encuesta = 1)=>{
             })
         )
         
-        //{valor:0 , texto: opciones[index].texto}
-        console.log('OPCIONES!!! '+  JSON.stringify(opciones))
         return preguntas;
 
     } catch (error) {

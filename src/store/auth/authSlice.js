@@ -10,6 +10,7 @@ export const authSlice = createSlice({
         displayName: null,
         photoURL: null,
         poblacion: null,
+        id_encuestado: null,
         errorMessage: null,
        
     },
@@ -17,12 +18,13 @@ export const authSlice = createSlice({
         login: (state,{ payload })=>{
 
             state.status= 'authenticated'; 
-            state.uid= payload.uid;
-            state.email= payload.email;
-            state.displayName= payload.displayName;
-            state.photoURL= payload.photoURL;
-            state.poblacion = payload.poblacion;
-            state.errorMessage= null;
+            state.uid   = payload.uid;
+            state.email = payload.email;
+            state.displayName   = payload.displayName;
+            state.photoURL      = payload.photoURL;
+            state.poblacion     = payload.poblacion;
+            state.id_encuestado = payload.id_encuestado;
+            state.errorMessage  = null;
             
         },
         logout: (state,{payload})=>{
@@ -33,6 +35,7 @@ export const authSlice = createSlice({
             state.photoURL= null;
             state.errorMessage= payload?.errorMessage;
             state.poblacion = null;
+            state.id_encuestado = null;
         },
         checkingCredentials: (state,action)=>{
             state.status = 'checking'

@@ -1,5 +1,5 @@
-import { ufpsformsApi } from "../api/ufpsformsApi";
-import { loadEncuestas, setEncuestas, setError } from "./encuestasSlice"
+import { ufpsformsApi } from '../api/ufpsformsApi';
+import { loadEncuestas, setEncuestas, setError } from './encuestasSlice'
 
 
 export const startLoadingEncuestas = (poblacion= '', page =0) => {
@@ -18,7 +18,9 @@ export const startLoadingEncuestas = (poblacion= '', page =0) => {
 
 
 export const getEncuestasFinalizadas= ()=>{
-    
+    return async (dispatch)=>{
+
+    }
 }
 
 

@@ -42,7 +42,7 @@ export const ResponderEncuesta = memo(() => {
   const [errorFormulario, setErrorFormulario] = useState(false);
   const datosEncuesta = useGetDatosEncuesta();
   const {poblaciones} = useSelector(state => state.poblaciones);
-  const {poblacion} = useSelector(state => state.auth);
+  const {poblacion, id_encuestado} = useSelector(state => state.auth);
   const {respuestas} = useSelector(state => state.respuestas);
 
   const encuestaDatos = useSelector(state => state.crearEncuesta);
@@ -60,8 +60,8 @@ export const ResponderEncuesta = memo(() => {
 
   const onSubmit = async (event)=>{
     event.preventDefault();
-    
-    const resp = await dispatch(startResponderEncuesta(respuestas));  
+    //TODO: Eliminar la pregunta de lista de disponibles. 
+    const resp = await dispatch(startResponderEncuesta(id_encuestado, respuestas));  
     if (!!resp.error){
       setErrorFormulario(true);
       

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TablaEncuestas } from "../components";
+import { TablaFinalizadas } from "../components/encuestas/TablaFinalizadas";
 
 export const EncuestasFinalizadasPage = () => {
 
@@ -20,7 +21,7 @@ export const EncuestasFinalizadasPage = () => {
     <UfpsFormsLayout >
           {
             encuestasFinalizadas.length === 0 ? <NothingSelectedView/>
-            :<TablaEncuestas cabeceras={['ID','Titulo','Población','Decripción','Fecha de cierre','Eliminar']} filas={encuestasFinalizadas}></TablaEncuestas>
+            :<TablaFinalizadas cabeceras={['ID','Titulo','Población','Decripción','Fecha de cierre','link','Eliminar']} filas={encuestasFinalizadas.map(e => e)}></TablaFinalizadas>
           }
            
     </UfpsFormsLayout>
