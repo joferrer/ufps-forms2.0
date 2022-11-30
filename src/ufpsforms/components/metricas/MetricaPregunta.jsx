@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { startTraerRespuestas } from '../../../store/respuestas';
-
+import { Chart } from "react-google-charts";
 
 
 export const MetricaPregunta = ({enunciado= '',pregunta={}}) => {
@@ -16,7 +16,25 @@ export const MetricaPregunta = ({enunciado= '',pregunta={}}) => {
     const {respuestas} = useSelector(state => state.respuestas);
     const [respuestasState, setrespuestasState] = useState([]);
 
-    
+    /*
+     const data = [
+        ["Opcion", "Hours per Day"],
+        ["Work", 11],
+        ["Eat", 2],
+        ["Commute", 2],
+        ["Watch TV", 2],
+        ["Sleep", 7], // CSS-style declaration
+      ];
+      */
+     const data = respuestas.length >0 ? 
+        [["Opcion", "Cantidad"], ... respuestasState.map((resp,index) => [`${opciones[index]?.texto}`,`${resp?.cantidad}`])]
+        : []
+      console.log('DATAAAAAAA:' + data.length)
+       const options = {
+        title: "Respuestas",
+        pieHole: 0.4,
+        is3D: false,
+      };
 
     const traerRespuestas = async()=>{
         await dispatch(startTraerRespuestas(pregunta.indice));
@@ -57,7 +75,13 @@ export const MetricaPregunta = ({enunciado= '',pregunta={}}) => {
                 )
             }
 
-           
+        <Chart
+            chartType="PieChart"
+            width="100%"
+            height="400px"
+            data={data}
+            options={options}
+        />
 
             <Divider/>
         </Grid>
