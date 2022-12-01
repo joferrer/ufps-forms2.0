@@ -23,6 +23,10 @@ export const encuestasSlice = createSlice({
         setError: (state, {payload})=>{
             state.error = payload.error;
         },
+        eliminarEncuesta : (state, {payload})=>{
+            const nuevoState = state.encuestas.filter(encuesta => encuesta.id_encuestas != payload.id_encuestas);
+            state.encuestas  = nuevoState;  
+        }
         
 
     }
@@ -31,5 +35,6 @@ export const encuestasSlice = createSlice({
 export const {
     loadEncuestas,
     setEncuestas,
-    setError
+    setError,
+    eliminarEncuesta
 } = encuestasSlice.actions;

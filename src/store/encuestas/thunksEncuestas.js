@@ -1,5 +1,5 @@
 import { ufpsformsApi } from '../api/ufpsformsApi';
-import { loadEncuestas, setEncuestas, setError } from './encuestasSlice'
+import { eliminarEncuesta, loadEncuestas, setEncuestas, setError } from './encuestasSlice'
 
 
 export const startLoadingEncuestas = (poblacion= '', page =0) => {
@@ -30,7 +30,8 @@ export const startEliminarEncuesta = (id_encuesta)=>{
             console.log('Eliminando....')
             const URL = `/encuesta/eliminar/${id_encuesta}`;
             const resp = await ufpsformsApi.delete(URL);
-            console.log('DELETE AAAAH: '+ resp.data)
+            dispatch(eliminarEncuesta({id_encuestas: id_encuesta}));
+
             return {
                 error: false,
                 msg: 'Encuesta eliminada con exito'

@@ -6,6 +6,13 @@ import { Link } from "react-router-dom"
 import { startEliminarEncuesta } from "../../../store/encuestas";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+
+const poblaciones = {
+    9:  'Graduados',
+    10: 'Estudiantes',
+    11: 'Docentes'
+}
+
 /**
  * Ej: cabecera = [nombre, cantidad]
  * filas = [{nombre : 'Estudiantes', cantidad: 0}, {nombre: 'profesores', cantidad: 0}, {nombre: 'Graduados', cantidad: 0}]
@@ -51,7 +58,10 @@ export const TablaEncuestas = ({cabeceras, filas}) => {
                             {
                                 Object.keys(fila).map((valor,index)=>(
                                     valor !== 'link' ?  
+                                        valor != 'id_poblacion' ?
                                         <TableCell key={`columna-tabla: ${index}`} >{fila[valor]}</TableCell>
+                                        :
+                                        <TableCell key={`columna-tabla: ${index}`} >{poblaciones[fila[valor]]}</TableCell>
                                     : 
                                     <TableCell key={`columna-tabla: ${index}`} >
                                         <Link to={`/poblacion?p=${index}`}><ArrowForwardOutlined /></Link>
