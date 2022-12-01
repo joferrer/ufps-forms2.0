@@ -57,6 +57,7 @@ export const CrearFormPage = memo(() => {
 
   const onSubmit = async (event)=>{
     event.preventDefault();
+    setErrorFormulario(false);
     dispatch(startCambiarTituloEncuesta(nombre));
     dispatch(startCambiarFechaCierre(fechaCierre.toISOString()));
     dispatch(startCambiarDescripcion(descripcion));  

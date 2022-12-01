@@ -103,7 +103,7 @@ export const startPublicarEncuesta = (encuesta = {})=>{
 const publicarPreguntas = async(URL, id, preguntas = [])=>{
     
     try {
-        await preguntas.forEach(async preg => {
+        Promise.all( preguntas.map(async preg => {
             const pregunta = {
                 id_pregunta: preg.indice,
                 enunciado: preg.enunciado,
@@ -117,7 +117,7 @@ const publicarPreguntas = async(URL, id, preguntas = [])=>{
             const url_opcion = `/opcion/agregaropcion/${insertId}`
             await publicarOpciones(url_opcion, insertId , preg.opciones);
 
-        });
+        }));
     } catch (error) {
         throw new Error("Ha ocurrido un error: "+ error);
     }
@@ -127,7 +127,7 @@ const publicarPreguntas = async(URL, id, preguntas = [])=>{
 const publicarOpciones = async(URL, id ,opciones= []) =>{
     
     try {
-        await opciones.forEach(async opcion =>{
+        Promise.all(opciones.map(async opcion =>{
             console.log('Insertanto:.... ' + opcion.valor + " - "+ opcion.texto + " " + id  );
             console.log('Opcion --> '+ opcion)
             const opcionApublicar = {
@@ -139,7 +139,7 @@ const publicarOpciones = async(URL, id ,opciones= []) =>{
             console.log("Funciona: "+ data);
 
             
-        })    
+        })  )  
     } catch (error) {
         throw new Error("Ha ocurrido un error: "+ error);
     }

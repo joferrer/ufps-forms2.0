@@ -24,9 +24,9 @@ export const Preguntas = memo(() => {
         <Typography variant="h5" color="initial">Preguntas</Typography>
         <Grid item xs={12} sx={{ mt: 2 }}>
             {
-                preguntas.map((pregunta)=>(
+                preguntas.map((pregunta,index)=>(
 
-                <Pregunta key={"Pregunta "+pregunta.index} pregunta={pregunta} />)
+                <Pregunta key={index+"- Pregunta "+pregunta.index} pregunta={pregunta} />)
                 )
             }
         </Grid>

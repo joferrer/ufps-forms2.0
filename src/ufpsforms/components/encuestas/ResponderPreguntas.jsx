@@ -11,7 +11,6 @@ export const ResponderPreguntas = memo(() => {
     
     const dispatch = useDispatch();
     const {preguntas} = useSelector(state => state.crearEncuesta);
-    console.log("BUENO: "+ preguntas[0].opciones)
     const {poblacion} = useSelector(state => state.auth);
 
 
@@ -25,7 +24,7 @@ export const ResponderPreguntas = memo(() => {
         <Typography variant="h5" color="initial">Preguntas</Typography>
         <Grid item xs={12} sx={{ mt: 2 }}>
             {
-                preguntas.map((pregunta,index)=>(
+                preguntas?.map((pregunta,index)=>(
                 
                     <ResponderPregunta key={index+"."+"Pregunta "+pregunta.index} pregunta={pregunta} pos={index}/>)
                 )
