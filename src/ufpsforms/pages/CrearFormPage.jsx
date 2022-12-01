@@ -104,9 +104,9 @@ export const CrearFormPage = memo(() => {
                           label="Población"
                           onChange={handleChange}
                         >
-                          <MenuItem value={9}>Estudiantes</MenuItem>
-                          <MenuItem value={10}>Profesores</MenuItem>
-                          <MenuItem value={11}>Graduados</MenuItem>
+                          <MenuItem value={9}>Graduados</MenuItem>
+                          <MenuItem value={10}>Estudiantes</MenuItem>
+                          <MenuItem value={11}>Docentes</MenuItem>
                         </Select>
                         <FormHelperText>{errorFormulario? 'Por favor, seleccione una población':''}</FormHelperText>
                       </FormControl>

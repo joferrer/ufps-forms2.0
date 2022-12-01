@@ -9,7 +9,6 @@ import { TablaFinalizadas } from "../components/encuestas/TablaFinalizadas";
 export const EncuestasFinalizadasPage = () => {
 
   const fechaActual = dayjs(new Date(Date.now()).toISOString());
-
   const dispatch = useDispatch();
   const {encuestas} = useSelector(state => state.encuestas);
 
