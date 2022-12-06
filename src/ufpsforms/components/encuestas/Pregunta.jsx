@@ -72,7 +72,7 @@ export const Pregunta = memo(({pregunta}) => {
                      onChange={handleChange}
                 >
                     {
-                        opciones.map(({valor,texto}) =>(
+                        opciones?.map(({valor,texto}) =>(
                             <Opcion key={"Opcion: "+pregunta.indice+"-"+valor} valor={valor} pregunta={pregunta} />
                         ))
                     }

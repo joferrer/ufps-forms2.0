@@ -43,7 +43,7 @@ export const CrearFormPage = memo(() => {
   const {poblaciones} = useSelector(state => state.poblaciones);
   const location  = useLocation();
 
-
+  const {preguntas} = useSelector(state => state.crearEncuesta);
   const dispatch = useDispatch();
   
  
@@ -73,14 +73,17 @@ export const CrearFormPage = memo(() => {
     datosEncuesta.fechaCierre = datosEncuesta.fechaCierre.replace("Z","");
     datosEncuesta.titulo      = nombre;
     datosEncuesta.descripcion = descripcion;
-    
+    datosEncuesta.preguntas   = preguntas;
+
     console.log('Datos encuesta: '+ datosEncuesta);
    const publicarEncuesta = await dispatch(startPublicarEncuesta(datosEncuesta));
 
    //TODO:HAY UN ERROR, AL PARECER SE PUBLICAN LA ENCUESTAS PERO NO LAS PREGUNTAS NI LAS OPCIONES :(   
     if(!publicarEncuesta.error){
+      console.log('PERO SI FUNCIONA...')
       window.location = "/" 
     }
+    console.log('ERROR: '+ publicarEncuesta.msg)
     setErrorFormulario(true)
  
       

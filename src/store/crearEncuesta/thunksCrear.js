@@ -1,3 +1,4 @@
+import { useGetDatosEncuesta } from "../../hooks";
 import { ufpsformsApi } from "../api/ufpsformsApi";
 import { 
     agregarPregunta,
@@ -56,15 +57,15 @@ export const startCambiarDescripcion = (descripcion)=>{
 }
 
 export const startPublicarEncuesta = (encuesta = {})=>{
-
+    console.log('NO ENTIENDOS')
     return async dispatch => {
         try{
            
-            console.log(encuesta);
+            console.log('Y si: '+JSON.stringify(encuesta));
 
             
             const URL_POST = `/encuesta/publicar/${encuesta.poblacion}`;
-
+            
             const encuestaAPublicar = {
                 id_encuesta: encuesta.index,
                 titulo: encuesta.titulo,
@@ -72,14 +73,17 @@ export const startPublicarEncuesta = (encuesta = {})=>{
                 id_poblacion: encuesta.poblacion,
                 fechacierre: encuesta.fechaCierre
             }
+            console.log(JSON.stringify(encuesta.preguntas[0].opciones))
             const publicar = await ufpsformsApi.post(URL_POST,encuestaAPublicar);
             const {data} = publicar;
             const {insertId} = data;
-            console.log("encuesta Publicada: "+ insertId);
+            
 
             const URL_PREGUNTA = `/pregunta/agregarpregunta/${insertId}`;
 
-            await publicarPreguntas(URL_PREGUNTA,insertId,encuesta.preguntas);      
+            publicarPreguntas(URL_PREGUNTA,insertId,encuesta.preguntas).then(resp => {
+                console.log(JSON.stringify('Que cosas! '+ resp))
+            }).catch();      
 
             return {
                 error:false,
@@ -113,9 +117,11 @@ const publicarPreguntas = async(URL, id, preguntas = [])=>{
             const publicar = await ufpsformsApi.post(URL,pregunta);
             const {data} = publicar;
             const {insertId} = data;
-            console.log("Funciona pregunta: "+ data);
+            console.log("PREGUNTA: "+ JSON.stringify(data)+ "INSERTID: "+ insertId)
             const url_opcion = `/opcion/agregaropcion/${insertId}`
-            await publicarOpciones(url_opcion, insertId , preg.opciones);
+            publicarOpciones(url_opcion, insertId , preg.opciones).then(resp =>{
+                console.log("Que cosas 2 !" +JSON.stringify(resp))
+            }).catch()
 
         }));
     } catch (error) {
@@ -128,13 +134,12 @@ const publicarOpciones = async(URL, id ,opciones= []) =>{
     
     try {
         Promise.all(opciones.map(async opcion =>{
-            console.log('Insertanto:.... ' + opcion.valor + " - "+ opcion.texto + " " + id  );
-            console.log('Opcion --> '+ opcion)
+            console.log('Insertando opcion:.... ' + opcion.valor + " - "+ opcion.texto + " " + id  );
             const opcionApublicar = {
                 id_opcion   : opcion.valor,
                 texto       : opcion.enunciadoOpcion,
                 id_pregunta : id
-            }
+            }   
             const {data} = await ufpsformsApi.post(URL,opcionApublicar);
             console.log("Funciona: "+ data);
 
